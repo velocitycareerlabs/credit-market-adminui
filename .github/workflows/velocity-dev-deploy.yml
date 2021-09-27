@@ -1,0 +1,42 @@
+name: velocitycareerlabs/credit-market-adminui
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: kamiazya/setup-graphviz@v1
+
+      - name: change directory to home
+        run: cd ~
+
+      - name: list files here
+        run: ls
+
+      - name: transfer files to host
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          host: ${{ secrets.VELOCITY_TEST_HOST_URL }}
+          username: ${{ secrets.VELOCITY_TEST_SSH_USER }}
+          privateKey: ${{ secrets.VELOCITY_TEST_SSH_KEY }}
+          local: "."
+          remote: "~/deployments/docker/fineract/community-app"
+
+      - name: Execute command on server
+        if: endsWith(github.ref, '/dev')
+        run: |
+          echo "$VELOCITY_TEST_SSH_KEY" > key.pem
+          chmod 400 key.pem
+          echo "Running docker compose command...!!!"
+          ssh -i key.pem -o StrictHostKeyChecking=no $VELOCITY_TEST_SSH_USER@$VELOCITY_TEST_HOST_URL 'sudo docker-compose -f deployments/docker/docker-compose.yml up --build --force-recreate --remove-orphans -d'
+        env:
+          VELOCITY_TEST_SSH_KEY: ${{ secrets.VELOCITY_TEST_SSH_KEY }}
+          VELOCITY_TEST_HOST_URL: ${{ secrets.VELOCITY_TEST_HOST_URL }}
+          VELOCITY_TEST_SSH_USER: ${{ secrets.VELOCITY_TEST_SSH_USER }}
+
+
