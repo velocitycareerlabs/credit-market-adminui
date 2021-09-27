@@ -12,12 +12,6 @@ jobs:
       - uses: actions/checkout@v1
       - uses: kamiazya/setup-graphviz@v1
 
-      - name: change directory to home
-        run: cd ~
-
-      - name: list files here
-        run: ls
-
       - name: transfer files to host
         uses: garygrossgarten/github-action-scp@release
         with:
