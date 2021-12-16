@@ -58,6 +58,11 @@
 
                 }
 
+                resourceFactory.voucherResource.get({clientId:routeParams.id},function(data)
+                {
+                    scope.voucher = data;
+                })
+
 
                /* resourceFactory.getAllFamilyMembers.get({clientId:routeParams.id},function(data)
                 {

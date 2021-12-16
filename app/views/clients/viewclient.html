@@ -416,11 +416,16 @@
 												</button>
 											</span>
 									</div>
+									<div data-ng-show="voucher" class="">
+										<h3 class="ng-binding">Voucher Balance: {{voucher.balance | number}}</h3>
+										<br>
+									</div>
 									<div class="span gray-head">
 											<span class="boldlabel">
 												<strong>{{'label.heading.savingsaccoverview' | translate }}</strong>
 											</span>
 									</div>
+
 									<table class="table table-condensed" data-ng-show="openSaving">
 										<tr class="graybg">
 											<th>{{'label.heading.accnum' | translate}}</th>
@@ -429,6 +434,7 @@
 											<th class="center">{{'label.heading.balance' | translate}}</th>
 											<th>Actions</th>
 										</tr>
+
 										<tr class="pointer-main"
 											ng-repeat="savingaccount in clientAccounts.savingsAccounts | orderBy:'id':true | filter:isSavingNotClosed | filter:isSavings">
 											<td class="pointer" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">

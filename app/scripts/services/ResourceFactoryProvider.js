@@ -765,6 +765,9 @@
                         getRate: {method: 'GET', params: {}},
                         update: {method: 'PUT', params: {}},
                         save: {method: 'POST', params: {}}
+                    }),
+                    voucherResource: defineResource(apiVer + "/vouchers/:clientId/balance", {clientId: '@clientId'}, {
+                        get: {method: 'GET', params: {}}
                     })
                 };
             }];
