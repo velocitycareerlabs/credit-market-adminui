@@ -32,10 +32,14 @@ jobs:
        # bash ./eng/environments/common.sh
     - name: Set S3 Bucket Prefix
       run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-fineractui-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
-    - name: Build Code
+    - name: Build Code In Container
       run: |
         docker build . --tag community:latest
+    - name: Run Container for getting artifact
+      run: | 
         docker run -d -p 80:80 --name communityui community:latest
+    - name: Copy Code to build folder
+      run: |
         mkdir build
         docker cp communityui:/usr/share/nginx/html ./build/
         docker stop communityui
