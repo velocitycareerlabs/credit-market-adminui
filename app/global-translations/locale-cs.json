@@ -1941,6 +1941,7 @@
 	"label.button.deposit": "Vklad",
 	"label.button.postInterestAsOn": "Úrok získaný z",
 	"label.button.withdraw": "Výběr",
+	"label.button.holdAmount": "Hold Amount",
 	"label.button.calculateInterest": "Vypočítat úrok",
 	"label.button.postInterest": "Zaúčtovat úroky",
 	"label.button.transferFunds": "Převod zdrojů",
