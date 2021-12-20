@@ -74,6 +74,9 @@
                     case "withdraw":
                         location.path('/savingaccount/' + accountId + '/withdrawal');
                         break;
+                    case "holdAmount":
+                        location.path('/savingaccount/' + accountId + '/holdAmount');
+                        break;
                     case "addcharge":
                         location.path('/savingaccounts/' + accountId + '/charges');
                         break;
@@ -228,6 +231,11 @@
                             name: "button.withdraw",
                             icon: "fa fa-arrow-down",
                             taskPermissionName:"WITHDRAW_SAVINGSACCOUNT"
+                        },
+                        {
+                            name: "button.holdAmount",
+                            icon: "fa fa-lock",
+                            taskPermissionName:"HOLDAMOUNT_SAVINGSACCOUNT"
                         },
                         {
                             name: "button.calculateInterest",

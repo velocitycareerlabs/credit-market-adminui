@@ -1908,6 +1908,7 @@
 	"label.button.deposit": "Depósito",
 	"label.button.postInterestAsOn": "Publicar interés como en",
 	"label.button.withdraw": "Retirar",
+	"label.button.holdAmount": "Hold Amount",
 	"label.button.calculateInterest": "Calcular interés",
 	"label.button.postInterest": "Aplicar interés",
 	"label.button.transferFunds": "Transferencia de fondos",
