@@ -32,17 +32,35 @@ jobs:
        # bash ./eng/environments/common.sh
     - name: Set S3 Bucket Prefix
       run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-fineractui-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
-    - name: Build Code In Container
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Install Grunt and bower
       run: |
-        docker build . --tag community:latest
-    - name: Run Container for getting artifact
-      run: | 
-        docker run -d -p 80:80 --name communityui community:latest
-    - name: Copy Code to build folder
+        npm install -g bower
+        npm install -g grunt-cli
+    - name: Install Dependecies Using bower
       run: |
-        mkdir build
-        docker cp communityui:/usr/share/nginx/html ./build/
-        docker stop communityui
+         bower install
+    - name: Install Node dependencies
+      run: |
+        npm install
+        npm install grunt-contrib-compass --save-dev
+    - name: Install Gem dependencies
+      run: |
+        gem install bundler
+        gem install compass
+        bundle install 
+        ls
+    - name: Build code to deploy
+      run: |
+        grunt prod --force 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -50,4 +68,4 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
     - name: Deploy static site to S3 bucket
-      run: aws s3 sync ./apps/registrar-app/build/ s3://${{ env.AWS_S3_BUCKET }} --delete
+      run: aws s3 sync ./dist/ s3://${{ env.AWS_S3_BUCKET }} --delete
