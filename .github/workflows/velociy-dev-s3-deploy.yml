@@ -12,7 +12,6 @@ on:
         required: true
 
 env:
-  SOURCE_REG: 'ghcr.io/velocitynetworkfoundation'
   SOURCE_REF: ${{ github.event.inputs.ref }}
   AWS_REGION: 'us-east-1'
   STACK_NAME: 'velo'
