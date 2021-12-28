@@ -1,0 +1,70 @@
+name: Build and Deploy FineractUi to S3
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Source branch (default `dev`, `dev`/`master`/`staging`/specific branch or tag)
+        default: 'dev'
+        required: true
+      environment:
+        description: Target environment on AWS (default `dev`, `dev`/`staging`/`prod`/other environnment)
+        default: 'dev'
+        required: true
+
+env:
+  SOURCE_REF: ${{ github.event.inputs.ref }}
+  AWS_REGION: 'us-east-1'
+  STACK_NAME: 'velo'
+  ZONE: 'velocitycareerlabs.io'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ env.SOURCE_REF }}
+    # Set Common Variables
+    - name: Set Common Variables
+      run: |
+       # bash ./eng/environments/common.sh
+    - name: Set S3 Bucket Prefix
+      run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-fineractui-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Install Grunt and bower
+      run: |
+        npm install -g bower
+        npm install -g grunt-cli
+    - name: Install Dependecies Using bower
+      run: |
+         bower install
+    - name: Install Node dependencies
+      run: |
+        npm install
+        npm install grunt-contrib-compass --save-dev
+    - name: Install Gem dependencies
+      run: |
+        gem install bundler
+        gem install compass
+        bundle install 
+        ls
+    - name: Build code to deploy
+      run: |
+        grunt prod --force 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+    - name: Deploy static site to S3 bucket
+      run: aws s3 sync ./dist/ s3://${{ env.AWS_S3_BUCKET }} --delete
