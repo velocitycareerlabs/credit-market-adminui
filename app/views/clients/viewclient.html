@@ -179,7 +179,7 @@
 				</h3>
 			</div>
 			<uib-tabset class="scrollable" tabset-name="clientTabset" scrollable persistent-tab>
-				<uib-tab heading="{{'label.heading.general' | translate}}">
+				<uib-tab heading="{{'label.heading.general' | translate}}" select="getVoucherBalance()">
 						<div class="col-md-11 col-sm-11 btn-group row pull-right">
 								  <a href="{{button.href}}/{{client.id}}/{{button.subhref}}" class="btn btn-primary btn-offset"
 									 has-permission='{{button.taskPermissionName}}' ng-repeat="button in buttonsArray.singlebuttons" >
