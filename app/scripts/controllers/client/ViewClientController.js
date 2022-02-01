@@ -648,6 +648,14 @@
             resourceFactory.clientNotesResource.getAllNotes({clientId: routeParams.id}, function (data) {
                 scope.clientNotes = data;
             });
+
+            scope.getVoucherBalance = function(){
+               resourceFactory.voucherResource.get({clientId:routeParams.id},function(data)
+               {
+                   scope.voucher = data;
+               })
+            };
+
             scope.getClientIdentityDocuments = function () {
                 resourceFactory.clientResource.getAllClientDocuments({clientId: routeParams.id, anotherresource: 'identifiers'}, function (data) {
                     scope.identitydocuments = data;
