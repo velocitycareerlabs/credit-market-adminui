@@ -35,7 +35,7 @@
                     });
 
                 }else{
-                    //redirectToAuth0();
+                    redirectToAuth0();
                 }
             }
 
@@ -45,8 +45,7 @@
                           "access_token" : routeParams.access_token,
                           "expires_in": routeParams.expires_in
                       }
-               };
-
+               }
                return response;
             }
 
