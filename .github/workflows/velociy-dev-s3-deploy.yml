@@ -30,7 +30,7 @@ jobs:
       run: |
        # bash ./eng/environments/common.sh
     - name: Set S3 Bucket Prefix
-      run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-fineractui-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
+      run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-mifos-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
