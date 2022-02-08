@@ -2,9 +2,9 @@
     mifosX.services = _.extend(module, {
         LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location) {
 
-            var domain = '$AUTH0_SERVER_URL';
-            var clientID = '$AUTH0_CLIENT_ID';
-            var connection = '$AUTH0_CONNECTION_ID';
+            var domain = '$AUTH0_SERVER_URL_DEV';
+            var clientID = '$AUTH0_CLIENT_ID_DEV';
+            var connection = '$AUTH0_CONNECTION_ID_DEV';
 
             function redirectToAuth0(){
                  window.location.href = 'https://'+
