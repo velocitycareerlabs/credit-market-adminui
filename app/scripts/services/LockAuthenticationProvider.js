@@ -6,7 +6,6 @@
             var clientID = '$AUTH0_CLIENT_ID';
             var connection = '$AUTH0_CONNECTION_ID';
 
-
             function redirectToAuth0(){
                  window.location.href = 'https://'+
                          domain+'/authorize?response_type=token&client_id='+
@@ -16,7 +15,8 @@
 
             //initialise application
             this.initialiseAuth0 =  function() {
-                var routeParams = location.search();
+                var routeParams = parseQueryString(window.location.search + window.location.hash.replace('#','?').replace("/",""));
+
                 if(routeParams.access_token){
                     httpService.setAuthorization(routeParams.access_token, true);
                     localStorageService.addToCookies('X-Authorization-Token', routeParams.access_token);
@@ -29,13 +29,13 @@
                     updateAccessDetails(tokensObject);
 
                     //fetch user details and redirect after
-                    resourceFactory.userTemplateResource.get(function (response) {
+                    resourceFactory.userTokenDetails.get(function (response) {
                         localStorageService.addToLocalStorage('userData', response);
                         scope.$broadcast("UserAuthenticationSuccessEvent", response);
                     });
 
                 }else{
-                    redirectToAuth0();
+                    //redirectToAuth0();
                 }
             }
 
@@ -60,6 +60,15 @@
                localStorageService.removeFromCookies('X-Authorization-Token');
                this.initialiseAuth0();
             });
+
+            var parseQueryString = function(str){
+                var objURL = {};
+                str.replace(
+                    new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
+                    function( $0, $1, $2, $3 ){ objURL[ $1 ] = $3; }
+                );
+                return objURL;
+            }
 
         }
     });
