@@ -15,7 +15,7 @@
             scope.twofactorRememberMe = false;
 
             //overriding loading of the login screen by loading keycloak
-            lockAuthenticationProvider.initialiseAuth0(location.search());
+            lockAuthenticationProvider.initialiseAuth0();
 
             scope.login = function () {
                 scope.authenticationFailed = false;

@@ -15,7 +15,8 @@
             }
 
             //initialise application
-            this.initialiseAuth0 =  function(routeParams) {
+            this.initialiseAuth0 =  function() {
+                var routeParams = location.search();
                 if(routeParams.access_token){
                     httpService.setAuthorization(routeParams.access_token, true);
                     localStorageService.addToCookies('X-Authorization-Token', routeParams.access_token);
