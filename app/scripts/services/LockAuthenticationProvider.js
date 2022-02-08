@@ -10,7 +10,7 @@
                  window.location.href = 'https://'+
                          domain+'/authorize?response_type=token&client_id='+
                          clientID+'&connection='+
-                         connection+'&redirect_uri=http://'+window.location.href+'/?&display=popup';
+                         connection+'&redirect_uri='+window.location.href+'&display=popup';
             }
 
             //initialise application
