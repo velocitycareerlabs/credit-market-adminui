@@ -7,6 +7,7 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'Langs'
         ],
         services: [
+            'LockAuthenticationProvider',
             'ResourceFactoryProvider',
             'HttpServiceProvider',
             'AuthenticationService',

@@ -4,6 +4,7 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'models.js'
         ],
         services: [
+            'LockAuthenticationProvider',
             'ResourceFactoryProvider.js',
             'HttpServiceProvider.js',
             'AuthenticationService.js',
