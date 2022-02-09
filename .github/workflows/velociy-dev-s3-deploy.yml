@@ -31,7 +31,6 @@ jobs:
           sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_DEV }}|g' app/scripts/services/LockAuthenticationProvider.js
           sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_DEV }}|g' app/scripts/services/LockAuthenticationProvider.js
           sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_DEV }}|g' app/scripts/services/LockAuthenticationProvider.js
-          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/initialTasks.js
 
     - name: Set S3 Bucket Prefix
       run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-mifos-${{ github.event.inputs.environment }}' >> $GITHUB_ENV

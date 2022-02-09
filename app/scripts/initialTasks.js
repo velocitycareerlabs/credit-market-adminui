@@ -26,7 +26,7 @@
         }
         //accessing from a file system or other servers
         else {
-            var baseApiUrlEnv = "$FINERACT_BASE_URL";
+            var baseApiUrlEnv = "https://devfineract.velocitycareerlabs.io";
 
             if (mainLink.hostname != "") {
                 baseApiUrl = "https://" + mainLink.hostname + (mainLink.port ? ':' + mainLink.port : '');
