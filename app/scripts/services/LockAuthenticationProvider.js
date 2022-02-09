@@ -15,7 +15,7 @@
 
             //initialise application
             this.initialiseAuth0 =  function() {
-                var routeParams = parseQueryString(window.location.search + window.location.hash.replace('#','?'));
+                var routeParams = parseQueryString(window.location.search + window.location.hash.replace('#','').replace('/',''));
 
                 if(routeParams.access_token){
                     httpService.setAuthorization(routeParams.access_token, true);
