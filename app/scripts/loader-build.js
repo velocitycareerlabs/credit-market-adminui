@@ -13,6 +13,7 @@
             'underscore': '../bower_components/underscore/underscore.min',
             'webstorage': '../bower_components/angular-webstorage/angular-webstorage.min',
             'require-css': '../bower_components/require-css/css',
+            'lockAuthenticationProvider':'../scripts/services/LockAuthenticationProvider',
             'd3': '../bower_components/d3/d3.min',
             'nvd3': '../bower_components/nvd3/nv.d3.min',
             'nvd3ChartDirectives': '../scripts/modules/angularjs-nvd3-directives',
@@ -67,6 +68,7 @@
             'angular-wizard': {deps: ['angular', 'underscore']},
             'angular-utils-pagination': {deps: ['angular']},
             'ng-scrollbar': {deps: ['angular']},
+            'lockAuthenticationProvider': {deps: ['angular']},
             'mifosX': {
                 deps: [
                     'angular',
