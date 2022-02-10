@@ -26,6 +26,8 @@
         }
         //accessing from a file system or other servers
         else {
+            var baseApiUrlEnv = "https://devfineract.velocitycareerlabs.io";
+
             if (mainLink.hostname != "") {
                 baseApiUrl = "https://" + mainLink.hostname + (mainLink.port ? ':' + mainLink.port : '');
             }
@@ -33,6 +35,12 @@
             if (QueryParameters["baseApiUrl"]) {
                 baseApiUrl = QueryParameters["baseApiUrl"];
             }
+
+            if(baseApiUrlEnv !== '$FINERACT_BASE_URL'){
+                baseApiUrl = baseApiUrlEnv;
+            }
+
+
             var queryLink = getLocation(baseApiUrl);
             host = "https://" + queryLink.hostname + (queryLink.port ? ':' + queryLink.port : '');
             portNumber = queryLink.port;
