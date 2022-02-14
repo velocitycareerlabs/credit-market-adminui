@@ -22,6 +22,8 @@
             'notificationWidget': '../scripts/modules/notificationWidget',
             'modified.datepicker': '../scripts/modules/datepicker',
             'configurations': '../scripts/modules/configurations',
+            'auth0-spa-js':'https://cdn.auth0.com/js/auth0-spa-js/1.19/auth0-spa-js.production',
+            'angular-auth0-spa-js':'../bower_components/angular-auth0-spa-js/dist/angular-auth0-spa-js',
             'angularFileUpload': '../bower_components/angularjs-file-upload/ng-file-upload.min',
             'angularFileUploadShim': '../bower_components/angularjs-file-upload/ng-file-upload-shim.min',
              'ngSanitize': '../bower_components/angular-sanitize/angular-sanitize.min',
@@ -68,6 +70,7 @@
             'angular-wizard': {deps: ['angular', 'underscore']},
             'angular-utils-pagination': {deps: ['angular']},
             'ng-scrollbar': {deps: ['angular']},
+            'angular-auth0-spa-js':{deps: ['angular', 'auth0-spa-js']},
             'lockAuthenticationProvider': {deps: ['angular']},
             'mifosX': {
                 deps: [
@@ -98,8 +101,10 @@
                     'angular-wizard',
                     'webcam-directive',
                     'angular-utils-pagination',
-                    'ng-scrollbar'
-                ],
+                    'ng-scrollbar',
+                    'auth0-spa-js',
+                    'angular-auth0-spa-js'
+                ],s
                 exports: 'mifosX'
             }
         },

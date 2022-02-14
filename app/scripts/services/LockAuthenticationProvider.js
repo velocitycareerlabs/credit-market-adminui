@@ -1,58 +1,75 @@
 (function (module) {
     mifosX.services = _.extend(module, {
-        LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location) {
-
-            var domain = '$AUTH0_SERVER_URL';
-            var clientID = '$AUTH0_CLIENT_ID';
-            var connection = '$AUTH0_CONNECTION_ID';
+        LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location, angularAuth0) {
 
             function redirectToAuth0(){
-                 window.location.href = 'https://'+
-                         domain+'/authorize?response_type=token&client_id='+
-                         clientID+'&connection='+
-                         connection+'&redirect_uri='+window.location.origin+'&display=popup';
+               angularAuth0.loginWithRedirect();
+            }
+
+            function renewAccessToken() {
+              angularAuth0.getTokenSilently().then(result => {
+                  console.log("getTokenSilently: " + result);
+                  accessToken = result;
+              });
             }
 
             //initialise application
             this.initialiseAuth0 =  function() {
                 var routeParams = parseQueryString(window.location.search + window.location.hash.replace('#','').replace('/',''));
-
-                if(routeParams.access_token){
-                    httpService.setAuthorization(routeParams.access_token, true);
-                    localStorageService.addToCookies('X-Authorization-Token', routeParams.access_token);
-                    localStorageService.addToLocalStorage('tokendetails', {
-                        "accessToken" : routeParams.access_token,
-                        "expiresIn": routeParams.expires_in
-                    });
-
-                    var tokensObject = tokensInFineractLocalStorageStandard(routeParams);
-                    updateAccessDetails(tokensObject);
-
-                    //fetch user details and redirect after
-                    resourceFactory.userTokenDetails.get(function (response) {
-                        localStorageService.addToLocalStorage('userData', response);
-                        scope.$broadcast("UserAuthenticationSuccessEvent", response);
-                    });
-
-                }else{
-                    redirectToAuth0();
+                if(routeParams.code){
+                    angularAuth0.handleRedirectCallback().then(redirectResult => {
+                            angularAuth0.getIdTokenClaims().then(id_token => {
+                              expiresAt = new Date(id_token.exp * 1000);
+                              idToken = id_token.__raw;
+                              console.log(idToken);
+                              angularAuth0.getTokenSilently().then(result => {
+                                accessToken = result;
+                                angularAuth0.isAuthenticated().then(
+                                  result => {
+                                    if (result) {
+                                        handleLoginSuccess(idToken, expiresAt);
+                                    } else {
+                                      localStorage.setItem('isLoggedIn', 'false');
+                                    }
+                                    //$state.go('home');
+                                  }
+                                )
+                              })
+                            });
+                          }).catch(error => {
+                            console.log(error);
+                          });
+                }else if(routeParams.error){
+                     var errorMsg = routeParams.error_description;
+                     alert(errorMsg);
+                     redirectToAuth0();
+                }
+                else{
+                     redirectToAuth0();
                 }
             }
 
-            var tokensInFineractLocalStorageStandard = function(routeParams){
-                var response =  {
-                      "data":{
-                          "access_token" : routeParams.access_token,
-                          "expires_in": routeParams.expires_in
-                      }
-               }
-               return response;
+            function handleLoginSuccess(idToken, expiresAt){
+              httpService.setAuthorization(idToken, true);
+              localStorageService.addToCookies('X-Authorization-Token', idToken);
+              localStorageService.addToLocalStorage('tokendetails', {
+                  "accessToken" : idToken,
+                  "expiresIn": expiresAt
+              });
+
+              var response =  {
+               "access_token" : idToken,
+               "expires_in": expiresAt
+              }
+              localStorageService.addToLocalStorage('tokendetails', response);
+
+              resourceFactory.userTokenDetails.get(function (data) {
+                  localStorageService.addToLocalStorage('userData', data);
+                  scope.$broadcast("UserAuthenticationSuccessEvent", data);
+              });
             }
 
-            var updateAccessDetails = function(response){
-               var data = response.data;
-               localStorageService.addToLocalStorage('tokendetails', data);
-            }
+
 
 
             scope.$on("OnUserPreLogout", function (event) {
@@ -71,7 +88,7 @@
 
         }
     });
-    mifosX.ng.services.service('lockAuthenticationProvider', ['localStorageService', 'AuthenticationService', 'ResourceFactory', 'HttpService', '$interval', '$rootScope', 'webStorage', '$window', '$location', mifosX.services.LockAuthenticationProvider])
+    mifosX.ng.services.service('lockAuthenticationProvider', ['localStorageService', 'AuthenticationService', 'ResourceFactory', 'HttpService', '$interval', '$rootScope', 'webStorage', '$window', '$location', 'angularAuth0', mifosX.services.LockAuthenticationProvider])
     .run(function ($log) {
         $log.info("LockAuthenticationProvider initialized");
     });

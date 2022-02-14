@@ -63,7 +63,6 @@
                 scope.response = response;
             });
             //hides loader
-            scope.domReady = true;
             scope.activity = {};
             scope.activityQueue = [];
             if (localStorageService.getFromLocalStorage('Location')) {
