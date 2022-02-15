@@ -5,14 +5,17 @@ angular.module('configurations', ['auth0.auth0'])
         var connection = '$AUTH0_CONNECTION_ID';
         var audience = '$AUTH0_AUDIENCE';
         var redirecturi = window.location.origin;
+
         angularAuth0Provider.init({
                 client_id: clientID,
                 domain: domain,
                 redirect_uri: redirecturi,
+                responseType: 'token id_token',
                 connection: connection,
-                scope: 'fineract:operation fineract:super_user'
+                scope: 'openid profile fineract:operation fineract:super_user'
         });
     })
+    .constant('SCOPES', 'openid profile fineract:operation fineract:super_user')
     .constant('API_VERSION', '/fineract-provider/api/v1')
     .constant('IDLE_DURATION', 30 * 60)
     .constant('WARN_DURATION', 10)

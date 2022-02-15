@@ -41,7 +41,7 @@
                     });
                     this.setAuthorization = function (key, isOauth) {
                         if(isOauth){
-                            http.defaults.headers.common.Authorization = "bearer " + key;
+                            http.defaults.headers.common.Authorization = "Bearer " + key;
                         } else {
                             http.defaults.headers.common.Authorization = "Basic " + key;
                         }

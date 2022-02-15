@@ -1,6 +1,12 @@
 (function (module) {
     mifosX.services = _.extend(module, {
-        LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location, angularAuth0) {
+        LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location, angularAuth0, SCOPES) {
+
+            var accessToken;
+            var idToken;
+            var expiresAt;
+
+            var scopes = {scope: SCOPES};
 
             function redirectToAuth0(){
                angularAuth0.loginWithRedirect();
@@ -21,7 +27,6 @@
                             angularAuth0.getIdTokenClaims().then(id_token => {
                               expiresAt = new Date(id_token.exp * 1000);
                               idToken = id_token.__raw;
-                              console.log(idToken);
                               angularAuth0.getTokenSilently().then(result => {
                                 accessToken = result;
                                 angularAuth0.isAuthenticated().then(
@@ -30,14 +35,16 @@
                                         handleLoginSuccess(idToken, expiresAt);
                                     } else {
                                       localStorage.setItem('isLoggedIn', 'false');
+                                      redirectToAuth0();
                                     }
-                                    //$state.go('home');
                                   }
                                 )
                               })
                             });
                           }).catch(error => {
                             console.log(error);
+                            localStorage.clear();
+                            redirectToAuth0();
                           });
                 }else if(routeParams.error){
                      var errorMsg = routeParams.error_description;
@@ -64,6 +71,7 @@
               localStorageService.addToLocalStorage('tokendetails', response);
 
               resourceFactory.userTokenDetails.get(function (data) {
+                  data['accessToken'] = idToken;
                   localStorageService.addToLocalStorage('userData', data);
                   scope.$broadcast("UserAuthenticationSuccessEvent", data);
               });
@@ -86,9 +94,28 @@
                 return objURL;
             }
 
+             scope.$on("OnUserPreLogout", function (event) {
+               logout();
+             });
+
+            function logout() {
+                  // Remove isLoggedIn flag from localStorage
+                  localStorage.removeItem('isLoggedIn');
+                  localStorageService.removeFromCookies('X-Authorization-Token');
+                  // Remove tokens and expiry time
+                  accessToken = '';
+                  idToken = '';
+                  expiresAt = 0;
+                  angularAuth0.logout({
+                    returnTo: window.location.origin
+                  });
+
+                  location.path('/login').replace();
+            }
+
         }
     });
-    mifosX.ng.services.service('lockAuthenticationProvider', ['localStorageService', 'AuthenticationService', 'ResourceFactory', 'HttpService', '$interval', '$rootScope', 'webStorage', '$window', '$location', 'angularAuth0', mifosX.services.LockAuthenticationProvider])
+    mifosX.ng.services.service('lockAuthenticationProvider', ['localStorageService', 'AuthenticationService', 'ResourceFactory', 'HttpService', '$interval', '$rootScope', 'webStorage', '$window', '$location', 'angularAuth0', 'SCOPES', mifosX.services.LockAuthenticationProvider])
     .run(function ($log) {
         $log.info("LockAuthenticationProvider initialized");
     });
