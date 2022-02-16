@@ -1,20 +1,20 @@
 (function (module) {
     mifosX.services = _.extend(module, {
-        LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location, angularAuth0, SCOPES) {
+        LockAuthenticationProvider: function (localStorageService, authenticationService, resourceFactory, httpService, $interval, scope, webStorage, $window, location, angularAuth0, SCOPES, AUDIENCE) {
 
             var accessToken;
             var idToken;
             var expiresAt;
 
-            var scopes = {scope: SCOPES};
-
             function redirectToAuth0(){
-               angularAuth0.loginWithRedirect();
+               angularAuth0.loginWithRedirect({
+                  scope: SCOPES,
+                  audience : AUDIENCE
+                });
             }
 
             function renewAccessToken() {
               angularAuth0.getTokenSilently().then(result => {
-                  console.log("getTokenSilently: " + result);
                   accessToken = result;
               });
             }
@@ -23,29 +23,18 @@
             this.initialiseAuth0 =  function() {
                 var routeParams = parseQueryString(window.location.search + window.location.hash.replace('#','').replace('/',''));
                 if(routeParams.code){
-                    angularAuth0.handleRedirectCallback().then(redirectResult => {
-                            angularAuth0.getIdTokenClaims().then(id_token => {
-                              expiresAt = new Date(id_token.exp * 1000);
-                              idToken = id_token.__raw;
-                              angularAuth0.getTokenSilently().then(result => {
-                                accessToken = result;
-                                angularAuth0.isAuthenticated().then(
-                                  result => {
-                                    if (result) {
-                                        handleLoginSuccess(idToken, expiresAt);
-                                    } else {
-                                      localStorage.setItem('isLoggedIn', 'false');
-                                      redirectToAuth0();
-                                    }
-                                  }
-                                )
-                              })
-                            });
-                          }).catch(error => {
-                            console.log(error);
-                            localStorage.clear();
-                            redirectToAuth0();
-                          });
+                   angularAuth0.handleRedirectCallback().then(redirectResult => {
+                    angularAuth0.getIdTokenClaims().then(id_token => {
+                      expiresAt = new Date(id_token.exp * 1000);
+                      idToken = id_token.__raw;
+                      getTokenSilentlyLocal(idToken);
+                    });
+                  }).catch(error => {
+                    console.log(error);
+                    localStorage.clear();
+                    redirectToAuth0();
+                  });
+
                 }else if(routeParams.error){
                      var errorMsg = routeParams.error_description;
                      alert(errorMsg);
@@ -77,6 +66,35 @@
               });
             }
 
+            function getTokenSilentlyLocal(idToken){
+                 try {
+                  angularAuth0.getTokenSilently({
+                    scope: SCOPES,
+                    audience : AUDIENCE
+                  }).then(result => {
+                    accessToken = result;
+                    idToken = accessToken;
+                  angularAuth0.isAuthenticated().then(
+                    result => {
+                      if (result) {
+                        handleLoginSuccess(idToken, expiresAt);
+                      } else {
+                        localStorage.setItem('isLoggedIn', 'false');
+                        redirectToAuth0();
+                      }
+                    }
+                  )
+                });
+                } catch (e) {
+                      if (e.error === 'login_required') {
+                        redirectToAuth0();
+                      }
+                      if (e.error === 'consent_required') {
+                        redirectToAuth0();
+                      }
+                      throw e;
+                }
+            }
 
 
 
@@ -115,7 +133,7 @@
 
         }
     });
-    mifosX.ng.services.service('lockAuthenticationProvider', ['localStorageService', 'AuthenticationService', 'ResourceFactory', 'HttpService', '$interval', '$rootScope', 'webStorage', '$window', '$location', 'angularAuth0', 'SCOPES', mifosX.services.LockAuthenticationProvider])
+    mifosX.ng.services.service('lockAuthenticationProvider', ['localStorageService', 'AuthenticationService', 'ResourceFactory', 'HttpService', '$interval', '$rootScope', 'webStorage', '$window', '$location', 'angularAuth0', 'SCOPES', 'AUDIENCE', mifosX.services.LockAuthenticationProvider])
     .run(function ($log) {
         $log.info("LockAuthenticationProvider initialized");
     });

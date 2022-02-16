@@ -1,6 +1,6 @@
 
 (function (mifosX) {
-    var defineHeaders = function ($httpProvider, $translateProvider, ResourceFactoryProvider, HttpServiceProvider, $idleProvider, $keepaliveProvider, IDLE_DURATION, WARN_DURATION, KEEPALIVE_INTERVAL) {
+    var defineHeaders = function ($httpProvider, $translateProvider, ResourceFactoryProvider, HttpServiceProvider, $idleProvider, $keepaliveProvider, IDLE_DURATION, WARN_DURATION, KEEPALIVE_INTERVAL, AUDIENCE) {
         var mainLink = getLocation(window.location.href);
         var baseApiUrl = "https://demo.mifos.io";
         var host = "";
@@ -26,7 +26,7 @@
         }
         //accessing from a file system or other servers
         else {
-            var baseApiUrlEnv = "https://devfineract.velocitycareerlabs.io";
+            var baseApiUrlEnv = AUDIENCE;
 
             if (mainLink.hostname != "") {
                 baseApiUrl = "https://" + mainLink.hostname + (mainLink.port ? ':' + mainLink.port : '');
@@ -36,7 +36,7 @@
                 baseApiUrl = QueryParameters["baseApiUrl"];
             }
 
-            if(baseApiUrlEnv !== '$FINERACT_BASE_URL'){
+            if(baseApiUrlEnv !== '$AUTH0_AUDIENCE'){
                 baseApiUrl = baseApiUrlEnv;
             }
 

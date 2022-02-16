@@ -10,13 +10,15 @@ angular.module('configurations', ['auth0.auth0'])
                 client_id: clientID,
                 domain: domain,
                 redirect_uri: redirecturi,
-                responseType: 'token id_token',
                 connection: connection,
-                scope: 'openid profile fineract:operation fineract:super_user'
+                responseType: 'token id_token',
+                audience: '$AUTH0_AUDIENCE',
+                scope: 'openid profile fineract:super_user fineract:operations'
         });
     })
-    .constant('SCOPES', 'openid profile fineract:operation fineract:super_user')
     .constant('API_VERSION', '/fineract-provider/api/v1')
+    .constant('SCOPES', 'openid profile fineract:super_user fineract:operations')
+    .constant('AUDIENCE', '$AUTH0_AUDIENCE')
     .constant('IDLE_DURATION', 30 * 60)
     .constant('WARN_DURATION', 10)
     .constant('KEEPALIVE_INTERVAL', 15 * 60)
