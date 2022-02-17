@@ -1,6 +1,6 @@
 
 (function (mifosX) {
-    var defineHeaders = function ($httpProvider, $translateProvider, ResourceFactoryProvider, HttpServiceProvider, $idleProvider, $keepaliveProvider, IDLE_DURATION, WARN_DURATION, KEEPALIVE_INTERVAL, AUDIENCE) {
+    var defineHeaders = function ($httpProvider, $translateProvider, ResourceFactoryProvider, HttpServiceProvider, $idleProvider, $keepaliveProvider, IDLE_DURATION, WARN_DURATION, KEEPALIVE_INTERVAL, FINERACT_BASE_URL) {
         var mainLink = getLocation(window.location.href);
         var baseApiUrl = "https://demo.mifos.io";
         var host = "";
@@ -26,7 +26,7 @@
         }
         //accessing from a file system or other servers
         else {
-            var baseApiUrlEnv = AUDIENCE;
+            var baseApiUrlEnv = FINERACT_BASE_URL;
 
             if (mainLink.hostname != "") {
                 baseApiUrl = "https://" + mainLink.hostname + (mainLink.port ? ':' + mainLink.port : '');
@@ -36,7 +36,7 @@
                 baseApiUrl = QueryParameters["baseApiUrl"];
             }
 
-            if(baseApiUrlEnv !== '$AUTH0_AUDIENCE'){
+            if(baseApiUrlEnv !== '$FINERACT_BASE_URL'){
                 baseApiUrl = baseApiUrlEnv;
             }
 
