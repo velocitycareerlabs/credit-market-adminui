@@ -4,6 +4,7 @@
             scope.loginCredentials = {};
             scope.passwordDetails = {};
             scope.authenticationFailed = false;
+            //unhide load
             scope.load = false;
 
             scope.twoFactorRequired = false;
