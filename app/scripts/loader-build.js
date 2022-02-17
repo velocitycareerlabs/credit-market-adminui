@@ -104,7 +104,7 @@
                     'ng-scrollbar',
                     'auth0-spa-js',
                     'angular-auth0-spa-js'
-                ],s
+                ],
                 exports: 'mifosX'
             }
         },
