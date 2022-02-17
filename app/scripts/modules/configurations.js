@@ -12,13 +12,14 @@ angular.module('configurations', ['auth0.auth0'])
                 redirect_uri: redirecturi,
                 connection: connection,
                 responseType: 'token id_token',
-                audience: '$AUTH0_AUDIENCE',
+                audience: audience,
                 scope: 'openid profile fineract:super_user fineract:operations'
         });
     })
     .constant('API_VERSION', '/fineract-provider/api/v1')
     .constant('SCOPES', 'openid profile fineract:super_user fineract:operations')
     .constant('FINERACT_BASE_URL', '$FINERACT_BASE_URL')
+    .constant('AUDIENCE', '$AUTH0_AUDIENCE')
     .constant('IDLE_DURATION', 30 * 60)
     .constant('WARN_DURATION', 10)
     .constant('KEEPALIVE_INTERVAL', 15 * 60)
