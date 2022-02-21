@@ -34,7 +34,8 @@
     "bootstrap-sass": "~3.3.3",
     "angular-chosen-localytics": "^1.9.3",
     "ng-scrollbar": "^0.0.8",
-    "almond": "^0.3.3"
+    "almond": "^0.3.3",
+    "angular-auth0-spa-js": "saltukalakus/angular-auth0-spa-js#^4.0.10"
   },
   "devDependencies": {
     "jasmine": "2.4.1"

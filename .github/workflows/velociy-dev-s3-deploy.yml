@@ -4,67 +4,87 @@ on:
     inputs:
       ref:
         description: Source branch (default `dev`, `dev`/`master`/`staging`/specific branch or tag)
-        default: 'dev'
+        default: "dev"
         required: true
       environment:
         description: Target environment on AWS (default `dev`, `dev`/`staging`/`prod`/other environnment)
-        default: 'dev'
+        default: "dev"
         required: true
 
 env:
   SOURCE_REF: ${{ github.event.inputs.ref }}
-  AWS_REGION: 'us-east-1'
-  STACK_NAME: 'velo'
-  ZONE: 'velocitycareerlabs.io'
+  AWS_REGION: "us-east-1"
+  STACK_NAME: "velo"
+  ZONE: "velocitycareerlabs.io"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ env.SOURCE_REF }}
-    # Set Common Variables
-    - name: Set Common Variables
-      run: |
-       # bash ./eng/environments/common.sh
-    - name: Set S3 Bucket Prefix
-      run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-fineractui-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.x
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Install Grunt and bower
-      run: |
-        npm install -g bower
-        npm install -g grunt-cli
-    - name: Install Dependecies Using bower
-      run: |
-         bower install
-    - name: Install Node dependencies
-      run: |
-        npm install
-        npm install grunt-contrib-compass --save-dev
-    - name: Install Gem dependencies
-      run: |
-        gem install bundler
-        gem install compass
-        bundle install 
-        ls
-    - name: Build code to deploy
-      run: |
-        grunt prod --force 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
-    - name: Deploy static site to S3 bucket
-      run: aws s3 sync ./dist/ s3://${{ env.AWS_S3_BUCKET }} --delete
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ env.SOURCE_REF }}
+      - name: set env variables
+        if: endsWith(github.ref, '/dev')
+        run: |
+          sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/modules/configurations.js
+      - name: set env variables
+        if: endsWith(github.ref, '/staging')
+        run: |
+          sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_STAGING }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_STAGING }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_STAGING }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_STAGING }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_STAGING }}|g' app/scripts/modules/configurations.js
+      - name: set env variables
+        if: endsWith(github.ref, '/master')
+        run: |
+          sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_PROD }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_PROD }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_PROD }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_PROD }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_PROD }}|g' app/scripts/modules/configurations.js
+      - name: Set S3 Bucket Prefix
+        run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-mifos-${{ github.event.inputs.environment }}' >> $GITHUB_ENV
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install Grunt and bower
+        run: |
+          npm install -g bower
+          npm install -g grunt-cli
+      - name: Install Dependecies Using bower
+        run: |
+          bower install
+      - name: Install Node dependencies
+        run: |
+          npm install
+          npm install grunt-contrib-compass --save-dev
+      - name: Install Gem dependencies
+        run: |
+          gem install bundler
+          gem install compass
+          bundle install 
+          ls
+      - name: Build code to deploy
+        run: |
+          grunt prod --force
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync ./dist/community-app/ s3://${{ env.AWS_S3_BUCKET }} --delete

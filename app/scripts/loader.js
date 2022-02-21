@@ -17,9 +17,11 @@
             'webstorage': '../bower_components/angular-webstorage/angular-webstorage',
             'angular-animate': '../bower_components/angular-animate/angular-animate',
             'angular-touch': '../bower_components/angular-touch/angular-touch',
+            'angular-auth0-spa-js':'../bower_components/angular-auth0-spa-js/dist/angular-auth0-spa-js',
             'require-css': '../bower_components/require-css/css',
             'd3': '../bower_components/d3/d3',
             'nvd3': '../bower_components/nvd3/nv.d3',
+            'lockAuthenticationProvider':'../scripts/services/LockAuthenticationProvider',
             'nvd3ChartDirectives': '../scripts/modules/angularjs-nvd3-directives',
             'styles': '../styles',
             'test': '../../test/functional',
@@ -80,6 +82,8 @@
             'angular-wizard': {deps: ['angular', 'underscore']},
             'angular-utils-pagination': {deps: ['angular']},
             'ng-scrollbar': {deps: ['angular']},
+            'angular-auth0-spa-js':{deps: ['angular']},
+            'lockAuthenticationProvider': {deps: ['angular']},
             'mifosX': {
                 deps: [
                     'angular',
@@ -111,7 +115,8 @@
                     'webcam-directive',
                     'angular-wizard',
                     'angular-utils-pagination',
-                    'ng-scrollbar'
+                    'ng-scrollbar',
+                    'angular-auth0-spa-js'
                 ],
                 exports: 'mifosX'
             }
