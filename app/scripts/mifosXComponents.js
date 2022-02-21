@@ -7,6 +7,7 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'Langs'
         ],
         services: [
+            'LockAuthenticationProvider',
             'ResourceFactoryProvider',
             'HttpServiceProvider',
             'AuthenticationService',
@@ -296,7 +297,12 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'organization/smscampaigns/ViewSmsCampaignController',
             'organization/smscampaigns/EditSmsCampaignController',
             'organization/entitydatatablechecks/EntityDatatableChecksController',
+            'configurations/AddressFormController',
+            'configurations/ViewCreditBureauSummaryController',
+            'configurations/AddNewCreditBureauController',
+            'configurations/MapCreditBureauToLpController',
             'notification/NotificationsController',
+            'selfservice/CreateSelfServiceUserController',
             'notification/NotificationsController',
             'configurations/AddressFormController',
             'client/EditFamilyMemberController',
@@ -322,8 +328,19 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
 			'adhocquery/AdHocQueryListController',
             'adhocquery/CreateAdHocQueryController',
             'adhocquery/ViewAdHocQueryController',
-            'adhocquery/EditAdHocQueryController'
-
+            'adhocquery/EditAdHocQueryController',
+            'product/RateController',
+            'product/CreateRateController',
+            'product/ViewRateController',
+            'product/EditRateController',
+            'loanAccount/NewGLIMAccountController',
+            'loanAccount/ViewGLIMAccountController',
+            'loanAccount/GlimLoanAccountActionsController',
+            'savings/CreateGSIMAccountController',
+            'savings/ViewGSIMaccountController',
+            'savings/GSIMAccountActionsController',
+            'savings/EditGSIMAccountController',
+            'savings/AddNewMemberToGSIMController'
         ],
         filters: [
             'StatusLookup',
@@ -358,7 +375,8 @@ define(['Q', 'underscore', 'mifosX'], function (Q) {
             'NumberFormatDirective',
             'SuccessfulResponsesDirective',
             'TabsPersistenceDirective',
-            'ScrollableDirective'
+            'ScrollableDirective',
+            'DecimalDirective'
         ]
     };
 

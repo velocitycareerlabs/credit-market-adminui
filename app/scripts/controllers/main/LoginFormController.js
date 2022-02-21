@@ -1,9 +1,10 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
-        LoginFormController: function (scope, authenticationService, resourceFactory, httpService, $timeout) {
+        LoginFormController: function (scope, authenticationService, resourceFactory, httpService, $timeout, lockAuthenticationProvider, routeParams, location) {
             scope.loginCredentials = {};
             scope.passwordDetails = {};
             scope.authenticationFailed = false;
+            //unhide load
             scope.load = false;
 
             scope.twoFactorRequired = false;
@@ -13,6 +14,9 @@
             scope.otpToken = null;
             scope.selectedDeliveryMethodName = null;
             scope.twofactorRememberMe = false;
+
+            //overriding loading of the login screen by loading keycloak
+            lockAuthenticationProvider.initialiseAuth0();
 
             scope.login = function () {
                 scope.authenticationFailed = false;
@@ -115,7 +119,7 @@
 
         }
     });
-    mifosX.ng.application.controller('LoginFormController', ['$scope', 'AuthenticationService', 'ResourceFactory', 'HttpService','$timeout', mifosX.controllers.LoginFormController]).run(function ($log) {
+    mifosX.ng.application.controller('LoginFormController', ['$scope', 'AuthenticationService', 'ResourceFactory', 'HttpService','$timeout', 'lockAuthenticationProvider', '$routeParams', '$location', mifosX.controllers.LoginFormController]).run(function ($log) {
         $log.info("LoginFormController initialized");
     });
 }(mifosX.controllers || {}));

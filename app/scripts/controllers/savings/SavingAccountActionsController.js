@@ -186,6 +186,19 @@
                     scope.showPaymentDetails = false;
                     scope.taskPermissionName = 'DEPOSIT_SAVINGSACCOUNT';
                     break;
+
+                case "holdAmount":
+                    scope.title = 'label.heading.holdamountfromsavingaccount';
+                    scope.labelName = 'label.input.transactiondate';
+                    scope.modelName = 'transactionDate';
+                    scope.showDateField = true;
+                    scope.isTransaction = true;
+                    scope.transactionAmountField = true;
+                    scope.showNoteField = false;
+                    scope.hidePaymentTypeField = true;
+                    scope.hidePaymentDetails = true;
+                    scope.taskPermissionName = 'HOLDAMOUNT_SAVINGSACCOUNT';
+                    break;
                 case "postInterestAsOn":
                     resourceFactory.savingsTrxnsTemplateResource.get({savingsId: scope.accountId}, function (data) {
                        scope.accountnumber=data.accountNo;
@@ -194,6 +207,7 @@
                     scope.modelName = 'transactionDate';
                     scope.showDateField = true;
                     scope.showAccountNumber=true;
+                    scope.taskPermissionName = 'POSTINTEREST_SAVINGSACCOUNT';
                     break;
                 case "withdrawal":
                     resourceFactory.savingsTrxnsTemplateResource.get({savingsId: scope.accountId}, function (data) {
@@ -270,7 +284,6 @@
                     scope.showNoteField = false;
                     scope.isTransaction = true;
                     scope.transactionAmountField = true;
-                    scope.showPaymentDetails = false;
                     scope.taskPermissionName = 'ADJUSTTRANSACTION_SAVINGSACCOUNT';
                     break;
                 case "editsavingcharge":
@@ -336,12 +349,8 @@
                     this.formData.locale = scope.optlang.code;
                     this.formData.dateFormat = scope.df;
                 }
-                if (scope.action == "deposit" || scope.action == "withdrawal" || scope.action == "modifytransaction" || scope.action=="postInterestAsOn") {
-                    if (scope.action == "withdrawal") {
-                        if (this.formData.transactionDate) {
-                            this.formData.transactionDate = dateFilter(this.formData.transactionDate, scope.df);
-                        }
-                    } else if (scope.action == "deposit") {
+                if (scope.action == "deposit" || scope.action == "withdrawal" || scope.action == "holdAmount" || scope.action == "modifytransaction" || scope.action=="postInterestAsOn") {
+                    if (scope.action == "withdrawal" || scope.action == "deposit" || scope.action == "holdAmount") {
                         if (this.formData.transactionDate) {
                             this.formData.transactionDate = dateFilter(this.formData.transactionDate, scope.df);
                         }

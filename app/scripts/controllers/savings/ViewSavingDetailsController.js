@@ -74,6 +74,9 @@
                     case "withdraw":
                         location.path('/savingaccount/' + accountId + '/withdrawal');
                         break;
+                    case "holdAmount":
+                        location.path('/savingaccount/' + accountId + '/holdAmount');
+                        break;
                     case "addcharge":
                         location.path('/savingaccounts/' + accountId + '/charges');
                         break;
@@ -130,7 +133,7 @@
 
             resourceFactory.savingsResource.get({accountId: routeParams.id, associations: 'all'}, function (data) {
                 scope.savingaccountdetails = data;
-                scope.savingaccountdetails.availableBalance = scope.savingaccountdetails.enforceMinRequiredBalance?(scope.savingaccountdetails.summary.accountBalance - scope.savingaccountdetails.minRequiredOpeningBalance):scope.savingaccountdetails.summary.accountBalance;
+                scope.savingaccountdetails.availableBalance = scope.savingaccountdetails.summary.availableBalance;
                 scope.convertDateArrayToObject('date');
                 if(scope.savingaccountdetails.groupId) {
                     resourceFactory.groupResource.get({groupId: scope.savingaccountdetails.groupId}, function (data) {
@@ -217,7 +220,7 @@
                         {
                             name: "button.postInterestAsOn",
                             icon: "icon-arrow-right",
-                            taskPermissionName:"POSTINTERESTASON_SAVINGSACCOUNT"
+                            taskPermissionName:"POSTINTEREST_SAVINGSACCOUNT"
                         },
                         {
                             name: "button.deposit",
@@ -228,6 +231,11 @@
                             name: "button.withdraw",
                             icon: "fa fa-arrow-down",
                             taskPermissionName:"WITHDRAW_SAVINGSACCOUNT"
+                        },
+                        {
+                            name: "button.holdAmount",
+                            icon: "fa fa-lock",
+                            taskPermissionName:"HOLDAMOUNT_SAVINGSACCOUNT"
                         },
                         {
                             name: "button.calculateInterest",

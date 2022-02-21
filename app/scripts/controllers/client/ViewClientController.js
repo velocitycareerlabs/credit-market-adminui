@@ -10,6 +10,10 @@
             scope.openLoan = true;
             scope.openSaving = true;
             scope.openShares = true ;
+            scope.openFixed = true;
+            scope.openRecurring = true;
+            scope.showFixed = false;
+            scope.showRecurring = false;
             scope.updateDefaultSavings = false;
             scope.charges = [];
 
@@ -35,7 +39,7 @@
                         for(var i=0;i<data.length;i++)
                         {
                             data[i].field='scope.view.'+data[i].field;
-                            eval(data[i].field+"="+data[i].is_enabled);
+                            eval(data[i].field+"="+data[i].isEnabled);
 
                         }
 
@@ -53,6 +57,11 @@
 
 
                 }
+
+                resourceFactory.voucherResource.get({clientId:routeParams.id},function(data)
+                {
+                    scope.voucher = data;
+                })
 
 
                /* resourceFactory.getAllFamilyMembers.get({clientId:routeParams.id},function(data)
@@ -287,9 +296,9 @@
                             file: file
                         }).then(function (imageData) {
                             // to fix IE not refreshing the model
-                            if (!scope.$$phase) {
+                            $timeout(function () {
                                 scope.$apply();
-                            }
+                            });
                             $uibModalInstance.close('upload');
                             route.reload();
                         });
@@ -489,6 +498,13 @@
             };
             resourceFactory.clientAccountResource.get({clientId: routeParams.id}, function (data) {
                 scope.clientAccounts = data;
+                if(data.loanAccounts){
+                    for(var i in data.loanAccounts){
+                        if(data.loanAccounts[i].status.value == "Active" && data.loanAccounts[i].inArrears){
+                            scope.clientAccounts.loanAccounts[i].status.value = "Active in Bad Standing"
+                        }
+                    }
+                }
                 if (data.savingsAccounts) {
                     for (var i in data.savingsAccounts) {
                         if (data.savingsAccounts[i].status.value == "Active") {
@@ -516,7 +532,44 @@
                         }
                     }
                 }
+                for(var i in data.savingsAccounts){
+                    if(data.savingsAccounts[i].depositType.value == 'Recurring Deposit'){
+                    scope.showRecurring = true;
+                    }
+                }
+                for(var i in data.savingsAccounts){
+                    if(data.savingsAccounts[i].depositType.value == 'Fixed Deposit'){
+                    scope.showFixed = true;
+                    }
+                }
+
+
             });
+
+            scope.isSavings = function (savingaccount) {
+                if(savingaccount.depositType.value == 'Savings'){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            };
+            scope.isFixed = function (savingaccount) {
+                if(savingaccount.depositType.value == 'Fixed Deposit'){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            };
+            scope.isRecurring = function(savingaccount) {
+                if(savingaccount.depositType.value == 'Recurring Deposit'){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            };
 
             resourceFactory.clientChargesResource.getCharges({clientId: routeParams.id, pendingPayment:true}, function (data) {
                 scope.charges = data.pageItems;
@@ -575,10 +628,34 @@
                 }
             };
 
+            scope.setFixed = function () {
+                if(scope.openFixed) {
+                    scope.openFixed = false;
+                } else {
+                    scope.openFixed = true;
+                }
+            };
+
+            scope.setRecurring = function () {
+                if(scope.openRecurring) {
+                    scope.openRecurring = false;
+                }else {
+                    scope.openRecurring = true;
+                }
+            };
+
 
             resourceFactory.clientNotesResource.getAllNotes({clientId: routeParams.id}, function (data) {
                 scope.clientNotes = data;
             });
+
+            scope.getVoucherBalance = function(){
+               resourceFactory.voucherResource.get({clientId:routeParams.id},function(data)
+               {
+                   scope.voucher = data;
+               })
+            };
+
             scope.getClientIdentityDocuments = function () {
                 resourceFactory.clientResource.getAllClientDocuments({clientId: routeParams.id, anotherresource: 'identifiers'}, function (data) {
                     scope.identitydocuments = data;

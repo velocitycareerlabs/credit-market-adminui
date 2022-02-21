@@ -47,12 +47,13 @@
                     importResource: defineResource(apiVer + "/imports", {}, {
                 			getImports: {method: 'GET', params: {}, isArray: true}
                     }),
-                    clientResource: defineResource(apiVer + "/clients/:clientId/:anotherresource", {clientId: '@clientId', anotherresource: '@anotherresource', sqlSearch: '@sqlSearch'}, {
-                        getAllClients: {method: 'GET', params: {limit: 1000, sqlSearch: '@sqlSearch'}},
+                    clientResource: defineResource(apiVer + "/clients/:clientId/:anotherresource", {clientId: '@clientId', anotherresource: '@anotherresource', status: '@status'}, {
+                        getAllClients: {method: 'GET', params: {limit: 1000, status: '@status'}},
                         getAllClientsWithoutLimit: {method: 'GET', params: {}},
                         getClientClosureReasons: {method: 'GET', params: {}},
                         getAllClientDocuments: {method: 'GET', params: {}, isArray: true},
-                        update: { method: 'PUT'}
+                        update: { method: 'PUT'},
+                        retrieveTransferDate: { method: 'GET', params:{}, isArray: true}
                     }),
                     clientChargesResource: defineResource(apiVer + "/clients/:clientId/charges/:resourceType", {clientId: '@clientId', resourceType: '@resourceType'}, {
                         getCharges: {method: 'GET'},
@@ -103,11 +104,21 @@
                         getAllGroups: {method: 'GET', params: {}, isArray: true},
                         update: { method: 'PUT'}
                     }),
+                    groupClients: defineResource(apiVer + "/groups/:groupId", {groupId: '@groupId', associations: '@associations'}, {
+                        get:{method:'GET',params: {}}
+                    }),
                     groupSummaryResource: defineResource(apiVer + "/runreports/:reportSource", {reportSource: '@reportSource'}, {
                         getSummary: {method: 'GET', params: {}}
                     }),
                     groupAccountResource: defineResource(apiVer + "/groups/:groupId/accounts", {groupId: '@groupId'}, {
                         getAll: {method: 'GET', params: {}}
+                    }),
+                    groupGSIMAccountResource: defineResource(apiVer + "/groups/:groupId/gsimaccounts", {groupId: '@groupId',parentGSIMAccountNo: '@parentGSIMAccountNo',
+                        parentGSIMId:'@parentGSIMId'}, {
+                        get: {method: 'GET', params: {},isArray:true}
+                    }),
+                    groupGLIMAccountResource: defineResource(apiVer + "/groups/:groupId/glimaccounts", {groupId: '@groupId',parentLoanAccountNo:'@parentLoanAccountNo'}, {
+                        get: {method: 'GET', params: {},isArray: true}
                     }),
                     groupNotesResource: defineResource(apiVer + "/groups/:groupId/notes/:noteId", {groupId: '@groupId', noteId: '@noteId'}, {
                         getAllNotes: {method: 'GET', params: {}, isArray: true}
@@ -205,6 +216,12 @@
                         getLoanAccountDetails: {method: 'GET', params: {}},
                         update: {method: 'PUT'}
                     }),
+                    glimLoan: defineResource(apiVer + "/loans/glimAccount/:glimId", {glimId:'@glimId',command: '@command'}, {
+                        post: {method: 'POST', params: {}}
+                    }),
+                    glimLoanTemplate: defineResource(apiVer + "/loans/glimAccount/:glimId", {glimId:'@glimId'}, {
+                        get:{method:'GET',params: {},isArray: true}
+                    }),
                     LoanEditDisburseResource: defineResource(apiVer + "/loans/:loanId/disbursements/:disbursementId", {loanId: '@loanId', disbursementId: '@disbursementId'}, {
                         getLoanAccountDetails: {method: 'GET', params: {}},
                         update: {method: 'PUT'}
@@ -225,6 +242,9 @@
                         update: { method: 'PUT' }
                     }),
                     userTemplateResource: defineResource(apiVer + "/users/template", {}, {
+                        get: {method: 'GET', params: {}}
+                    }),
+                    userTokenDetails: defineResource(apiVer + "/users/tokendetails", {}, {
                         get: {method: 'GET', params: {}}
                     }),
                     employeeResource: defineResource(apiVer + "/staff/:staffId", {staffId: '@staffId',status:"all"}, {
@@ -334,6 +354,13 @@
                         get: {method: 'GET', params: {}},
                         getAllNotes: {method: 'GET', params: {}, isArray: true},
                         update: {method: 'PUT'}
+                    }),
+                    gsimResource: defineResource(apiVer + "/savingsaccounts/gsim/:parentAccountId", {parentAccountId:'@parentAccountId'}, {
+                        post: {method: 'POST', params: {}},
+                        update: {method: 'PUT'}
+                    }),
+                    gsimCommandsResource: defineResource(apiVer + "/savingsaccounts/gsimcommands/:parentAccountId", {parentAccountId:'@parentAccountId',command:'@command'}, {
+                        post: {method: 'POST', params: {}}
                     }),
                     savingsChargeResource: defineResource(apiVer + "/savingsaccounts/:accountId/charges/:resourceType", {accountId: '@accountId', resourceType: '@resourceType'}, {
                         get: {method: 'GET', params: {}},
@@ -467,7 +494,8 @@
                     }),
                     checkerInboxResource: defineResource(apiVer + "/makercheckers/:templateResource", {templateResource: '@templateResource'}, {
                         get: {method: 'GET', params: {}},
-                        search: {method: 'GET', params: {}, isArray: true}
+                        search: {method: 'GET', params: {}, isArray: true},
+                        save: {method: 'POST', params: {command : '@command'}}
                     }),
                     officeToGLAccountMappingResource: defineResource(apiVer + "/financialactivityaccounts/:mappingId", {mappingId: '@mappingId'}, {
                         get: {method: 'GET', params: {mappingId: '@mappingId'}},
@@ -532,6 +560,11 @@
                         get: {method: 'GET' , params: {paymentTypeId: '@paymentTypeId'}},
                         update: {method: 'PUT', params: {paymentTypeId: '@paymentTypeId'}}
                     }),
+                    notificationsResource: defineResource(apiVer + "/notifications", {},{
+                        getAllNotifications: {method: 'GET', params: {isRead: true, sqlSearch: '@sqlSearch'}},
+                        getAllUnreadNotifications: {method: 'GET', params: {isRead: false, sqlSearch: '@sqlSearch'}},
+                        update: {method: 'PUT', params:{}}
+                    }),
                     externalServicesS3Resource: defineResource(apiVer + "/externalservice/S3", {},{
                         get: {method: 'GET', params: {}, isArray : true},
                         put: {method: 'PUT', params:{}}
@@ -594,6 +627,37 @@
                         createJournals:{method:'POST', params:{command : 'createjournalentry'}},
                         reCreateProvisioningEntries:{method:'POST', params:{command : 'recreateprovisioningentry'}},
                         getJournals: {method: 'GET', params: {entryId: '@entryId'}}
+                    }),
+
+                    creditBureauSummary: defineResource(apiVer + "/CreditBureauConfiguration/organisationCreditBureau",{},{
+                        get: {method: 'GET', isArray: true },
+                        post:{method:'POST',params:{}},
+                        put:{method:'PUT',params:{}}
+                    }),
+                    addOrgCreditBureau: defineResource(apiVer + "/CreditBureauConfiguration/organisationCreditBureau/:ocbId",{},{
+                        post:{method:'POST',params:{}}
+                    }),
+                    addCreditBureauLoanProductMapping: defineResource(apiVer + "/CreditBureauConfiguration/mappings/:cb_id",{},{
+                        post:{method:'POST',params:{}}
+                    }),
+                    creditBureauMapping: defineResource(apiVer + "/CreditBureauConfiguration/mappings",{},{
+                        get: {method: 'GET', isArray: true },
+                        put:{method:'PUT',params:{}}
+                    }),
+                    creditBureauTemplate: defineResource(apiVer + "/CreditBureauConfiguration/", {}, {
+                        get: {method: 'GET', isArray: true }
+                    }),
+                    creditBureauByCountry: defineResource(apiVer + "/CreditBureauConfiguration/dropdown/:country", {country:'@country'}, {
+                        get: {method: 'GET',isArray: true }
+                    }),
+                    creditBureauProductByCreditBureau: defineResource(apiVer + "/CreditBureauConfiguration/mappings/:credit_bureau_master_id", {credit_bureau_master_id:'@credit_bureau_master_id'}, {
+                        get: {method: 'GET',isArray : true }
+                    }),
+                    equifaxCreditCheck: defineResource(apiVer + "/CreditBureauConfiguration/equifax", {}, {
+                        get: {method: 'GET',params:{} }
+                    }),
+                    lpdropdown: defineResource(apiVer + "/CreditBureauConfiguration/loanProduct", {}, {
+                        get: {method: 'GET', isArray: true }
                     }),
                     provisioningjournals: defineResource(apiVer + "/journalentries/provisioning", {}, {
                         get: {method: 'GET', params: {}}
@@ -698,6 +762,15 @@
                     twoFactorConfigResource: defineResource(apiVer+"/twofactor/configure", {}, {
                         getAllConfigs: {method: 'GET', params: {}},
                         put: {method: 'PUT', params: {}}
+                    }),
+                    rateResource: defineResource(apiVer + "/rates/:rateId", {rateId: '@rateId'}, {
+                        getAllRates: {method: 'GET', params: {}, isArray: true},
+                        getRate: {method: 'GET', params: {}},
+                        update: {method: 'PUT', params: {}},
+                        save: {method: 'POST', params: {}}
+                    }),
+                    voucherResource: defineResource(apiVer + "/vouchers/:clientId/balance", {clientId: '@clientId'}, {
+                        get: {method: 'GET', params: {}}
                     })
                 };
             }];

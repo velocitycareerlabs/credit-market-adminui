@@ -1,12 +1,12 @@
 
 (function (mifosX) {
-    var defineHeaders = function ($httpProvider, $translateProvider, ResourceFactoryProvider, HttpServiceProvider, $idleProvider, $keepaliveProvider, IDLE_DURATION, WARN_DURATION, KEEPALIVE_INTERVAL) {
+    var defineHeaders = function ($httpProvider, $translateProvider, ResourceFactoryProvider, HttpServiceProvider, $idleProvider, $keepaliveProvider, IDLE_DURATION, WARN_DURATION, KEEPALIVE_INTERVAL, FINERACT_BASE_URL) {
         var mainLink = getLocation(window.location.href);
-        var baseApiUrl = "https://demo.openmf.org";
+        var baseApiUrl = "https://demo.mifos.io";
         var host = "";
         var portNumber = "";
         //accessing from openmf server
-        if (mainLink.hostname.indexOf('openmf.org') >= 0) {
+        if (mainLink.hostname.indexOf('mifos.io') >= 0) {
             var hostname = window.location.hostname;
             console.log('hostname---' + hostname);
             domains = hostname.split('.');
@@ -26,6 +26,8 @@
         }
         //accessing from a file system or other servers
         else {
+            var baseApiUrlEnv = FINERACT_BASE_URL;
+
             if (mainLink.hostname != "") {
                 baseApiUrl = "https://" + mainLink.hostname + (mainLink.port ? ':' + mainLink.port : '');
             }
@@ -33,6 +35,12 @@
             if (QueryParameters["baseApiUrl"]) {
                 baseApiUrl = QueryParameters["baseApiUrl"];
             }
+
+            if(baseApiUrlEnv !== '$FINERACT_BASE_URL'){
+                baseApiUrl = baseApiUrlEnv;
+            }
+
+
             var queryLink = getLocation(baseApiUrl);
             host = "https://" + queryLink.hostname + (queryLink.port ? ':' + queryLink.port : '');
             portNumber = queryLink.port;
