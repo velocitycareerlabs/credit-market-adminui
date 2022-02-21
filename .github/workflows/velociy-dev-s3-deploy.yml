@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{ env.SOURCE_REF }}
       - name: set env variables
-        if: endsWith(github.ref, '/dev')
+        if: env.SOURCE_REF == 'dev'
         run: |
           sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_DEV }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_DEV }}|g' app/scripts/modules/configurations.js
@@ -34,7 +34,7 @@ jobs:
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_DEV }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/modules/configurations.js
       - name: set env variables
-        if: endsWith(github.ref, '/staging')
+        if: env.SOURCE_REF == 'staging'
         run: |
           sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_STAGING }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_STAGING }}|g' app/scripts/modules/configurations.js
@@ -42,7 +42,7 @@ jobs:
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_STAGING }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_STAGING }}|g' app/scripts/modules/configurations.js
       - name: set env variables
-        if: endsWith(github.ref, '/master')
+        if: env.SOURCE_REF == 'master'
         run: |
           sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_PROD }}|g' app/scripts/modules/configurations.js
