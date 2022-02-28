@@ -5,6 +5,7 @@
             var accessToken;
             var idToken;
             var expiresAt;
+            var username;
 
             function redirectToAuth0(){
                angularAuth0.loginWithRedirect({
@@ -27,6 +28,8 @@
                     angularAuth0.getIdTokenClaims().then(id_token => {
                       expiresAt = new Date(id_token.exp * 1000);
                       idToken = id_token.__raw;
+                      var jwtData = parseJwt(idToken);
+                      username =  jwtData.name;
                       getTokenSilentlyLocal(idToken);
                     });
                   }).catch(error => {
@@ -61,6 +64,7 @@
 
               resourceFactory.userTokenDetails.get(function (data) {
                   data['accessToken'] = idToken;
+                  data['username'] = username;
                   localStorageService.addToLocalStorage('userData', data);
                   scope.$broadcast("UserAuthenticationSuccessEvent", data);
               });
@@ -129,6 +133,16 @@
                   });
 
                   location.path('/login').replace();
+            }
+
+            function parseJwt (token) {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+
+                return JSON.parse(jsonPayload);
             }
 
         }
