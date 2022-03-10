@@ -5,6 +5,12 @@ on:
     - dev
     - staging
     - master
+    paths:
+      - 'packages/**'
+      - 'servers/**'
+      - 'tools/**'
+      - 'eng/environments/**'
+      - 'eng/docker/node/**'
 env:
   AWS_REGION: "us-east-1"
   STACK_NAME: "velo"
