@@ -2,9 +2,9 @@ name: Build and Deploy FineractUi to S3
 on:
   push:
     branches:
-    - dev
-    - staging
-    - master
+      - dev
+      - staging
+      - master
     paths:
       - 'packages/**'
       - 'servers/**'
