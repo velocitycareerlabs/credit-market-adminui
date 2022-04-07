@@ -194,7 +194,7 @@
                     scope.showDateField = true;
                     scope.isTransaction = true;
                     scope.transactionAmountField = true;
-                    scope.showNoteField = false;
+                    scope.showNoteField = true;
                     scope.hidePaymentTypeField = true;
                     scope.hidePaymentDetails = true;
                     scope.taskPermissionName = 'HOLDAMOUNT_SAVINGSACCOUNT';
