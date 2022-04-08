@@ -40,13 +40,13 @@
                         <input ng-model="formData.transactionAmount" type="text"
                                placeholder="{{'label.heading.transactionamount' | translate}}" class="form-control"/>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <h4 class="control-label ng-binding">{{'label.heading.transactionType' | translate}}</h4>
                         <br>
                         <select id="transactionTypes" chosen="transactionTypes" class="form-control" ng-model="formData.transactionType" ng-options="transactionType.value as transactionType.option for transactionType in transactionTypes" value="{{transactionType.value}}">
                             <option class="displaynone" value="">{{'label.selecttrxntype' | translate}}</option>
                         </select>
-                    </div>
+                    </div>-->
                     <div>
                         <br>
                         <a ng-click="searchTransactionFunction(1)" class="btn btn-primary btn-space pull-left btn-toolbar" has-permission='READ_JOURNALENTRY'> Search <i class="fa fa-search "></i></a>

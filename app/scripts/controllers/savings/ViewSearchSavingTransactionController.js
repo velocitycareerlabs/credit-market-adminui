@@ -51,13 +51,7 @@
 
             scope.routeTo = function (savingsAccountId, transactionId, accountTransfer) {
                 if (location.search().savingsId != null) {
-                    var currentPath = location.path();
-                    var currentUrl = location.absUrl();
-                    console.log('Before location path :  ' + currentPath);
-                    console.log('Before abs path : ' + currentUrl);
-                    var trxnUrlToOpen = currentUrl.replace(currentPath, '/viewsavingtrxn/' + savingsAccountId + '/trxnId/' + transactionId);
-                    console.log('After abs path : ' +trxnUrlToOpen);
-                    window.open(trxnUrlToOpen,'_blank');
+                    location.path('/viewsavingtrxn/' + savingsAccountId + '/trxnId/' + transactionId);
                 } else if (location.search().recurringDepositId != null) {
                     location.path('/viewrecurringdepositaccounttrxn/' + savingsAccountId + '/' + transactionId);
                 } else if (location.search().fixedDepositId != null) {

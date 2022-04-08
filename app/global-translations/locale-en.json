@@ -1858,6 +1858,7 @@
   "label.heading.inactivatecharge": "Inactivate Charge",
   "label.heading.collectedon": "Collected On",
   "label.heading.transactionid": "Transaction ID",
+  "label.heading.notesdescriptionsearch": "Notes/Description",
   "label.heading.paymentdetails": "Payment Details",
   "label.heading.checknumber": "Cheque#",
   "label.heading.routingcode": "Routing Code",
