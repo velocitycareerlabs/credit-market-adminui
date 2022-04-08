@@ -386,6 +386,10 @@
                 location.path("/searchtransaction/").search({savingsId: scope.savingaccountdetails.id});
             };
 
+            scope.searchSavingTransaction = function(){
+                location.path("/searchSavingTransaction/").search({savingsId: scope.savingaccountdetails.id, orisavingaccountdetails: scope.savingaccountdetails});
+            };
+
             scope.viewDataTable = function (registeredTableName,data){
                 if (scope.datatabledetails.isMultirow) {
                     location.path("/viewdatatableentry/"+registeredTableName+"/"+scope.savingaccountdetails.id+"/"+data.row[0]);

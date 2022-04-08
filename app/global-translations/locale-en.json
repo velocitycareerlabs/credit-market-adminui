@@ -1533,6 +1533,8 @@
   "label.button.prepayment": "Prepay Loan",
   "label.button.addTranche": "Add Tranche",
   "label.button.viewjournalentries": "View Journal Entries",
+  "label.button.searchtransactions": "Search Transactions",
+  "label.selecttrxntype": "Select transaction type",
   "label.button.newrepaymentschedule": "View New Repayment Schedule",
   "label.button.reschedule": "Reschedule",
   "label.button.recreate": "Recreate",
