@@ -1084,6 +1084,7 @@
   "label.input.currency": "Currency",
   "label.input.referencenumber": "Reference number",
   "label.input.searchbytransaction": "Search by transaction",
+  "label.input.searchbynotesordescription": "Search by Notes/Description",
   "label.input.additionalfilter": "Additional filter",
   "label.input.transactionid": "Transaction ID",
   "label.input.entryid": "Entry ID",

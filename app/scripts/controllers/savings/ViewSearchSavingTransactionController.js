@@ -156,6 +156,10 @@
                     params.trxnId = scope.formData.transactionId;
                 }
 
+                if (scope.formData.notesdescriptionsearch) {
+                    params.notesOrdesc = scope.formData.notesdescriptionsearch;
+                }
+
                 if (scope.formData.transactionAmount) {
                     params.trxnAmount = scope.formData.transactionAmount;
                 }

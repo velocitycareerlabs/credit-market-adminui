@@ -4,7 +4,7 @@
             <li ng-show="groupLevel == 1"><a href="#/viewcenter/{{savingaccountdetails.groupId}}">{{savingaccountdetails.groupName}}</a>
             <li ng-show="groupLevel == 2"><a href="#/viewgroup/{{savingaccountdetails.groupId}}">{{savingaccountdetails.groupName}}</a>
             <li ng-show="orisavingaccountdetails.clientName"><a href="#/viewclient/{{orisavingaccountdetails.clientId}}">{{orisavingaccountdetails.clientName}}</a>
-            <li class="active" ng-show="orisavingaccountdetails.depositType.id==100"><a href="#/viewsavingaccount/{{orisavingaccountdetails.id}}">{{orisavingaccountdetails.savingsProductName}}({{orisavingaccountdetails.accountNo}})</li>
+            <li class="active" ng-show="orisavingaccountdetails.depositType.id==100"><a href="#/viewsavingaccount/{{orisavingaccountdetails.id}}">{{orisavingaccountdetails.savingsProductName}}({{orisavingaccountdetails.accountNo}})</a>
             <li class="active" ng-show="orisavingaccountdetails.depositType.id==200 || orisavingaccountdetails.depositType.id==300">{{orisavingaccountdetails.depositProductName}}({{orisavingaccountdetails.accountNo}})</li>
         </ul>
     </div>
@@ -29,10 +29,10 @@
                 <div class="form-group">
 
                     <div class="form-group">
-                        <h4 class="control-label ng-binding">{{'label.heading.transactionid' | translate}}</h4>
+                        <h4 class="control-label ng-binding">{{'label.heading.notesdescriptionsearch' | translate}}</h4>
                         <br>
-                        <input ng-model="formData.transactionId" type="text"
-                               placeholder="{{'label.input.searchbytransaction' | translate}}" class="form-control"/>
+                        <input ng-model="formData.notesdescriptionsearch" type="text"
+                               placeholder="{{'label.input.searchbynotesordescription' | translate}}" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <h4 class="control-label ng-binding">{{'label.heading.transactionamount' | translate}}</h4>
