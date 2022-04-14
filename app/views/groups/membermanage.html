@@ -34,7 +34,7 @@
                                             typeahead-min-length="3"
                                             typeahead-editable="false"
                                             uib-typeahead="client as client.displayName for client in clientOptions($viewValue)"
-                                            typeahead-on-select="viewClient(available)"/>
+                                            typeahead-on-select="viewClient(available)" autocomplete="off"/>
                                  </div>
                                  <div class="col-sm-1 col-md-1">
                                      <button ng-show="available" type="button" class="btn angled-btn btn-primary" data-ng-click="add()">
