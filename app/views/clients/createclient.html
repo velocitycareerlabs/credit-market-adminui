@@ -51,7 +51,7 @@
                            <label class="control-label col-sm-2" for="firstname">{{ 'label.input.firstname' | translate }}<span
                               class="required">*</span></label>
                            <div class="col-sm-3">
-                              <input type="text" id="firstname" name="firstname" ng-model="formData.firstname"  class="form-control" required
+                              <input type="text" id="firstname" name="firstname" ng-model="formData.firstname"  class="form-control" required autocomplete="off"
                                 ng-pattern="/(^[A-z])[A-z.'-]*/" late-Validate/>
                            </div>
                            <div class="col-sm-2">
@@ -70,7 +70,7 @@
                         <div class="form-group">
                            <label class="control-label col-sm-2" for="middlename">{{'label.input.middlename' | translate}}</label>
                            <div class="col-sm-3">
-                              <input type="text" id="middlename" name="middlename" ng-model="formData.middlename"  class="form-control" ng-pattern="/(^[A-z])[A-z.'-]*/"/>
+                              <input type="text" id="middlename" name="middlename" ng-model="formData.middlename"  class="form-control" ng-pattern="/(^[A-z])[A-z.'-]*/" autocomplete="off"/>
                            </div>
                            <div class="col-sm-2">
                                <span ng-show="createclientform.middlename.$invalid && createclientform.middlename.$dirty">
@@ -97,7 +97,7 @@
                            </label>
                            <div class="col-sm-3">
                               <input type="text" id="lastname" name="lastname" ng-model="formData.lastname" class="form-control"
-                                ng-pattern="/(^[A-z])[A-z.'-]*/" required late-Validate/>
+                                ng-pattern="/(^[A-z])[A-z.'-]*/" required late-Validate autocomplete="off"/>
                            </div>
                            <div class="col-sm-2">
                                <span ng-show="createclientform.lastname.$invalid && createclientform.lastname.$dirty">
@@ -117,7 +117,7 @@
                               class="required">*</span></label>
                            <div class="col-sm-3">
                               <input type="text" id="fullname" name="fullname" ng-model="formData.fullname" class="form-control"
-                                ng-pattern="/(^[A-z])[A-z.'-]*/" required late-Validate/>
+                                ng-pattern="/(^[A-z])[A-z.'-]*/" required late-Validate autocomplete="off"/>
                            </div>
                            <div class="col-sm-2">
                               <form-validate valattributeform="createclientform" valattribute="fullname"/>
@@ -144,7 +144,7 @@
                      <label class="control-label col-sm-2" ng-show="showNonPersonOptions">{{'label.input.incorporationdate' | translate}}</label>
                      <div class="col-sm-3">
                         <input id="dateofbirth" type="text" name="dateofbirth" datepicker-pop="dd MMMM yyyy"
-                           ng-model="first.dateOfBirth" is-open="opened1" min="minDate" max="restrictDate"  class="form-control"/>
+                           ng-model="first.dateOfBirth" is-open="opened1" min="minDate" max="restrictDate"  class="form-control" autocomplete="off"/>
                      </div>
                      <div data-ng-switch on="showNonPersonOptions">
                         <div data-ng-switch-when="false">
@@ -162,7 +162,7 @@
                            <label class="control-label col-sm-2">{{'label.input.incorpValidityTillDate' | translate}}</label>
                            <div class="col-sm-3">
                               <input id="incorpValidityTillDate" type="text" name="incorpValidityTillDate" datepicker-pop="dd MMMM yyyy"
-                                 ng-model="first.incorpValidityTillDate" is-open="opened1"   class="form-control"/>
+                                 ng-model="first.incorpValidityTillDate" is-open="opened1"   class="form-control" autocomplete="off"/>
                            </div>
                         </div>
                      </div>
@@ -243,7 +243,7 @@
                            <label class="control-label col-sm-2">{{'label.input.activationdate' | translate}}<span class="required">*</span></label>
                            <div class="col-sm-3">
                               <input id="activationDate" type="text" name="activationdate" datepicker-pop="dd MMMM yyyy"
-                                 ng-model="first.date" is-open="opened" min="'2000-01-01'" max="restrictDate"  class="form-control"/>
+                                 ng-model="first.date" is-open="opened" min="'2000-01-01'" max="restrictDate"  class="form-control" autocomplete="off"/>
                            </div>
                         </div>
                      </div>
@@ -252,7 +252,7 @@
                      <label class="control-label col-sm-2">{{'label.input.submittedon' | translate}}</label>
                      <div class="col-sm-3">
                         <input id="submittedon" type="text" name="submittedon" datepicker-pop="dd MMMM yyyy"
-                           ng-model="first.submitondate" is-open="opened1" min="'2000-01-01'" max="restrictDate"  class="form-control"/>
+                           ng-model="first.submitondate" is-open="opened1" min="'2000-01-01'" max="restrictDate"  class="form-control" autocomplete="off"/>
                      </div>
                   </div>
                   <div class="form-group" ng-show="showSavingOptions">
@@ -407,7 +407,7 @@
 
                               <div class="col-sm-3">
                                   <input id="dateofbirth" type="text" name="dateofbirth" datepicker-pop="dd MMMM yyyy"
-                                         ng-model="familyArray[$index].dateOfBirth" is-open="opened1" min="minDate "max="restrictDate"  class="form-control"/>
+                                         ng-model="familyArray[$index].dateOfBirth" is-open="opened1" min="minDate "max="restrictDate"  class="form-control" autocomplete="off"/>
                               </div>
 
                           </div>
@@ -570,12 +570,12 @@
 		                  ng-model="formData.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName]" class="form-control"/>
 		               <input ng-show="fieldType(columnHeader.columnDisplayType) == 'DATE'" type="text"
 		                  datepicker-pop="dd MMMM yyyy" ng-model="formDat.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName]"
-		                  is-open="opened{{$index}}" class="form-control"/>
+		                  is-open="opened{{$index}}" class="form-control" autocomplete="off"/>
 		               <div ng-show="fieldType(columnHeader.columnDisplayType) == 'DATETIME'" class="form-inline">
 		                  <div class="form-group">
 		                     <input type="text" datepicker-pop="dd MMMM yyyy"
 		                        ng-model="formDat.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName].date"
-		                        is-open="opened{{$index}}" class="form-control"/>
+		                        is-open="opened{{$index}}" class="form-control" autocomplete="off"/>
 		                  </div>
 		                  <div class="form-group">
 		                     <input type="time" placeholder="HH:MM:SS"

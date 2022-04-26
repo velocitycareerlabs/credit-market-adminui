@@ -51,7 +51,7 @@
 
 								<div class="col-sm-3">
 									<input id="submittedon" type="text" name="submittedon" datepicker-pop="dd MMMM yyyy"
-										   ng-model="first.submitondate" is-open="opened1" min="'2000-01-01'" max="restrictDate" class="form-control"/>
+										   ng-model="first.submitondate" is-open="opened1" min="'2000-01-01'" max="restrictDate" class="form-control" autocomplete="off"/>
 								</div>
 							</div>
 							<div class="form-group">
@@ -74,7 +74,7 @@
 										<label class="control-label col-sm-2 col-md-offset-4">{{'label.input.activationdate' | translate}}<span class="required">*</span></label>
 										<div class="col-sm-3">
 											<input id="activationDate" type="text" datepicker-pop="dd MMMM yyyy" ng-model="first.date"
-												is-open="opened" min="'2000-01-01'" max="restrictDate" class="form-control"/>
+												is-open="opened" min="'2000-01-01'" max="restrictDate" class="form-control" autocomplete="off"/>
 										</div>
 									</div>
 								</div>
@@ -88,7 +88,7 @@
 																typeahead-min-length="2"
 																typeahead-editable="false"
 																uib-typeahead="client as client.displayName for client in clientOptions($viewValue)"
-																typeahead-on-select="viewClient(clientData.available)"/>
+																typeahead-on-select="viewClient(clientData.available)" autocomplete="off"/>
 											<div data-ng-show="available" class="paddedtop10">
 												<p>{{'label.heading.clientdetails' | translate}}</p>
 												<table class="table">
@@ -159,12 +159,12 @@
 								<input ng-show="fieldType(columnHeader.columnDisplayType) == 'DATE'" type="text"
 									   datepicker-pop="dd MMMM yyyy"
 									   ng-model="formDat.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName]"
-									   is-open="opened{{$index}}" class="form-control"/>
+									   is-open="opened{{$index}}" class="form-control" autocomplete="off"/>
 								<div ng-show="fieldType(columnHeader.columnDisplayType) == 'DATETIME'" class="form-inline">
 									<div class="form-group">
 										<input type="text" datepicker-pop="dd MMMM yyyy"
 											   ng-model="formDat.datatables[datatables.indexOf(datatable)].data[columnHeader.columnName].date"
-											   is-open="opened{{$index}}" class="form-control"/>
+											   is-open="opened{{$index}}" class="form-control" autocomplete="off"/>
 									</div>
 									<div class="form-group">
 										<input type="time" placeholder="HH:MM:SS"
