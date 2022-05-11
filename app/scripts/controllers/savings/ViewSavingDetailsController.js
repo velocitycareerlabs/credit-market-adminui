@@ -68,6 +68,9 @@
                     case "activate":
                         location.path('/savingaccount/' + accountId + '/activate');
                         break;
+                    case "changeActivationDate":
+                        location.path('/savingaccount/' + accountId + '/changeActivationDate');
+                        break;    
                     case "deposit":
                         location.path('/savingaccount/' + accountId + '/deposit');
                         break;
@@ -255,6 +258,10 @@
                             {
                                 name: "button.close",
                                 taskPermissionName:"CLOSE_SAVINGSACCOUNT"
+                            },
+                            {
+                                name: "button.changeActivationDate",
+                                taskPermissionName:"ACTIVATE_SAVINGSACCOUNT"
                             }
                         ]
 
