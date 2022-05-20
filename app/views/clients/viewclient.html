@@ -444,7 +444,7 @@
 											</td>
 											<td class="pointer" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.productName}}</td>
 											<td class="pointer" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.lastActiveTransactionDate|DateFormat}}</td>
-											<td class="pointer center" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.accountBalance|number}}</td>
+											<td class="pointer center" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.accountBalance|number : 6}}</td>
 											<td class="pointer" ng-if="savingaccount.status.active">
 											<span ng-repeat="button in savingsActionbuttons">
 											  <a uib-tooltip="{{'label.'+button.name | translate}}" ng-show="button.name" has-permission='{{button.taskPermissionName}}'
