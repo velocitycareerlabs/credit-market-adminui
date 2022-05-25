@@ -248,7 +248,7 @@
 
                 <div class="col-sm-3">
                     <input id="submittedOnDate" type="text" name="submittedOnDate" datepicker-pop="dd MMMM yyyy"
-                           ng-model="date.submittedOnDate" is-open="opened1" max="restrictDate"  class="form-control" autocomplete="off"/>
+                           ng-model="date.submittedOnDate" is-open="opened1" min="minDate" max="restrictDate"  class="form-control" autocomplete="off"/>
                 </div>
             </div>
 
@@ -259,8 +259,7 @@
 	
 	                <div class="col-sm-3">
 	                    <input id="activationDate" type="text" datepicker-pop="dd MMMM yyyy"
-	                           ng-model="date.activationDate" is-open="opened" min="'2000-01-01'"
-	                           max="restrictDate"  class="form-control" autocomplete="off"/>
+	                           ng-model="date.activationDate" is-open="opened" min="minDate" max="restrictDate"  class="form-control" autocomplete="off"/>
 	                </div>
 
 	            </div>
