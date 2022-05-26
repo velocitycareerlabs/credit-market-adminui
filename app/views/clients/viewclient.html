@@ -1,3 +1,9 @@
+<style>
+div.client-title-toolbar {
+	min-height: 100px;
+	overflow: hidden;
+}
+</style>
 <div class="content-container" ng-controller="ViewClientController">
 	<ul class="breadcrumb">
 		<li>{{client.officeName}}</li>
@@ -164,7 +170,7 @@
 	</script>
 	<div class="card">
 		<div class="content">
-			<div class="toolbar">
+			<div class="client-title-toolbar">
 				<h3 class="client-title">
 					<i class="fa fa-circle {{client.status.code | StatusLookup}}" uib-tooltip="{{client.status.value}}" uib-tooltip-placement="top"></i>
 					<small ng-if="client.subStatus.description">
