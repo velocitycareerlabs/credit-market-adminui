@@ -53,7 +53,7 @@
             </tr>
             <tr>
                 <td>{{ 'label.heading.amount' | translate}}</td>
-                <td>{{transaction.amount | number}}</td>
+                <td>{{transaction.amount | number : vel_decimal_points}}</td>
             </tr>
             <tr ng-if="transaction.note">
                 <td>{{ 'label.heading.notes' | translate}}</td>

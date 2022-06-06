@@ -51,7 +51,7 @@
 
 						<div class="col-sm-3">
 							<input type="text" id="firstname" name="firstname" ng-model="formData.firstname"  class="form-control" required
-								   late-Validate/>
+								   late-Validate autocomplete="off"/>
 						</div>
 						<div class="col-sm-3">
 							<form-validate valattributeform="editclientform" valattribute="firstname"/>
@@ -66,7 +66,7 @@
 						<label class="control-label col-sm-2">{{ 'label.input.middlename' | translate }}:</label>
 
 						<div class="col-sm-3">
-							<input id="middlename" type="text" ng-model="formData.middlename" class="form-control">
+							<input id="middlename" type="text" ng-model="formData.middlename" class="form-control" autocomplete="off">
 						</div>
 						<label class="control-label col-sm-2" for="isStaff">{{ 'label.input.isStaff' | translate }}</label>
 						<div class="col-sm-3">
@@ -86,7 +86,7 @@
 
 						<div class="col-sm-3">
 							<input type="text" id="lastname" name="lastname" ng-model="formData.lastname"  class="form-control" required
-								   late-Validate/>
+								   late-Validate autocomplete="off"/>
 						</div>
 						<div class="col-sm-3">
 							<form-validate valattributeform="editclientform" valattribute="lastname"/>
@@ -102,7 +102,7 @@
 
 						<div class="col-sm-3">
 							<input type="text" id="fullname" name="fullname" ng-model="formData.fullname" class="form-control"
-								   required late-Validate/>
+								   required late-Validate autocomplete="off"/>
 						</div>
 						<div class="col-sm-3">
 							<form-validate valattributeform="editclientform" valattribute="fullname"/>
@@ -144,7 +144,7 @@
 			
 			    <div class="col-sm-3">
 			        <input id="dateofbirth" type="text" name="dateofbirth" datepicker-pop="dd MMMM yyyy"
-			               ng-model="date.dateOfBirth" is-open="opened1" min="minDate" max="restrictDate"  class="form-control"/>
+			               ng-model="date.dateOfBirth" is-open="opened1" min="minDate" max="restrictDate"  class="form-control" autocomplete="off"/>
 			    </div>
 
 				<div data-ng-switch on="showNonPersonOptions">
@@ -166,7 +166,7 @@
 
 						<div class="col-sm-3">
 							<input id="incorpValidityTillDate" type="text" name="incorpValidityTillDate" datepicker-pop="dd MMMM yyyy"
-								   ng-model="date.incorpValidityTillDate" is-open="opened1"   class="form-control"/>
+								   ng-model="date.incorpValidityTillDate" is-open="opened1"   class="form-control" autocomplete="off"/>
 						</div>
 					</div>
 				</div>
@@ -248,7 +248,7 @@
 
                 <div class="col-sm-3">
                     <input id="submittedOnDate" type="text" name="submittedOnDate" datepicker-pop="dd MMMM yyyy"
-                           ng-model="date.submittedOnDate" is-open="opened1" max="restrictDate"  class="form-control"/>
+                           ng-model="date.submittedOnDate" is-open="opened1" min="minDate" max="restrictDate"  class="form-control" autocomplete="off"/>
                 </div>
             </div>
 
@@ -259,8 +259,7 @@
 	
 	                <div class="col-sm-3">
 	                    <input id="activationDate" type="text" datepicker-pop="dd MMMM yyyy"
-	                           ng-model="date.activationDate" is-open="opened" min="'2000-01-01'"
-	                           max="restrictDate"  class="form-control"/>
+	                           ng-model="date.activationDate" is-open="opened" min="minDate" max="restrictDate"  class="form-control" autocomplete="off"/>
 	                </div>
 
 	            </div>

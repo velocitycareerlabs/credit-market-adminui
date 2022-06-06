@@ -1,6 +1,6 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
-        ViewClientController: function (scope, routeParams, route, location, resourceFactory, http, $uibModal, API_VERSION, $rootScope, Upload) {
+        ViewClientController: function (scope, routeParams, route, location, resourceFactory, http, $uibModal, API_VERSION, $rootScope, Upload, VEL_DECIMAL_POINTS) {
             scope.client = [];
             scope.identitydocuments = [];
             scope.buttons = [];
@@ -26,6 +26,7 @@
             var entityname="ADDRESS";
             formdata={};
 
+            scope.vel_decimal_points = VEL_DECIMAL_POINTS;
 
             resourceFactory.clientTemplateResource.get(function(data)
             {
@@ -986,7 +987,7 @@
         }
     });
 
-    mifosX.ng.application.controller('ViewClientController', ['$scope', '$routeParams', '$route', '$location', 'ResourceFactory', '$http', '$uibModal', 'API_VERSION', '$rootScope', 'Upload', mifosX.controllers.ViewClientController]).run(function ($log) {
+    mifosX.ng.application.controller('ViewClientController', ['$scope', '$routeParams', '$route', '$location', 'ResourceFactory', '$http', '$uibModal', 'API_VERSION', '$rootScope', 'Upload', 'VEL_DECIMAL_POINTS', mifosX.controllers.ViewClientController]).run(function ($log) {
         $log.info("ViewClientController initialized");
     });
 }(mifosX.controllers || {}));

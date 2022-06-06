@@ -337,6 +337,15 @@
                     scope.waiveCharge = true;
                     scope.taskPermissionName = 'WAIVE_SAVINGSACCOUNTCHARGE';
                     break;
+                case "changeActivationDate":
+                    scope.title = 'label.heading.activatesavingaccount';
+                    scope.labelName = 'label.input.activatedon';
+                    scope.modelName = 'activatedOnDate';
+                    scope.showDateField = true;
+                    scope.showNoteField = false;
+                    scope.taskPermissionName = 'ACTIVATE_SAVINGSACCOUNT';
+                    scope.fetchEntities('m_savings_account','ACTIVATE');
+                    break;    
             }
 
             scope.cancel = function () {
@@ -414,6 +423,10 @@
                             this.formData.rejectedOnDate = dateFilter(this.formData.rejectedOnDate, scope.df);
                         }
                     } else if (scope.action == "activate") {
+                        if (this.formData.activatedOnDate) {
+                            this.formData.activatedOnDate = dateFilter(this.formData.activatedOnDate, scope.df);
+                        }
+                    } else if (scope.action == "changeActivationDate") {
                         if (this.formData.activatedOnDate) {
                             this.formData.activatedOnDate = dateFilter(this.formData.activatedOnDate, scope.df);
                         }

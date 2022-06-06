@@ -1,3 +1,9 @@
+<style>
+div.client-title-toolbar {
+	min-height: 100px;
+	overflow: hidden;
+}
+</style>
 <div class="content-container" ng-controller="ViewClientController">
 	<ul class="breadcrumb">
 		<li>{{client.officeName}}</li>
@@ -164,7 +170,7 @@
 	</script>
 	<div class="card">
 		<div class="content">
-			<div class="toolbar">
+			<div class="client-title-toolbar">
 				<h3 class="client-title">
 					<i class="fa fa-circle {{client.status.code | StatusLookup}}" uib-tooltip="{{client.status.value}}" uib-tooltip-placement="top"></i>
 					<small ng-if="client.subStatus.description">
@@ -444,7 +450,7 @@
 											</td>
 											<td class="pointer" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.productName}}</td>
 											<td class="pointer" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.lastActiveTransactionDate|DateFormat}}</td>
-											<td class="pointer center" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.accountBalance|number}}</td>
+											<td class="pointer center" data-ng-click="routeToSaving(savingaccount.id, savingaccount.depositType.code)">{{savingaccount.accountBalance|number : vel_decimal_points}}</td>
 											<td class="pointer" ng-if="savingaccount.status.active">
 											<span ng-repeat="button in savingsActionbuttons">
 											  <a uib-tooltip="{{'label.'+button.name | translate}}" ng-show="button.name" has-permission='{{button.taskPermissionName}}'

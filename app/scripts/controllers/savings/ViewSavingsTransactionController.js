@@ -1,9 +1,13 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
-        ViewSavingsTransactionController: function (scope, resourceFactory, location, routeParams, dateFilter, $uibModal) {
+        ViewSavingsTransactionController: function (scope, resourceFactory, location, routeParams, dateFilter, $uibModal, VEL_DECIMAL_POINTS) {
+            scope.vel_decimal_points = VEL_DECIMAL_POINTS;
             scope.flag = false;
             resourceFactory.savingsTrxnsResource.get({savingsId: routeParams.accountId, transactionId: routeParams.id}, function (data) {
                 scope.transaction = data;
+                if(scope.transaction.note == null && scope.transaction.transfer.transferDescription != null){
+                    scope.transaction.note = scope.transaction.transfer.transferDescription;
+                }
                 if (scope.transaction.transactionType.value == 'Transfer' || scope.transaction.reversed == 'true' || scope.transaction.transactionType.id==3 || scope.transaction.transactionType.id==17) {
                     scope.flag = true;
                 }
@@ -40,7 +44,7 @@
             };
         }
     });
-    mifosX.ng.application.controller('ViewSavingsTransactionController', ['$scope', 'ResourceFactory', '$location', '$routeParams', 'dateFilter', '$uibModal', mifosX.controllers.ViewSavingsTransactionController]).run(function ($log) {
+    mifosX.ng.application.controller('ViewSavingsTransactionController', ['$scope', 'ResourceFactory', '$location', '$routeParams', 'dateFilter', '$uibModal', 'VEL_DECIMAL_POINTS', mifosX.controllers.ViewSavingsTransactionController]).run(function ($log) {
         $log.info("ViewSavingsTransactionController initialized");
     });
 }(mifosX.controllers || {}));
