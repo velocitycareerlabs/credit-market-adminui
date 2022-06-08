@@ -23,6 +23,7 @@ angular.module('configurations', ['auth0.auth0'])
     .constant('IDLE_DURATION', 30 * 60)
     .constant('WARN_DURATION', 10)
     .constant('KEEPALIVE_INTERVAL', 15 * 60)
-    .constant('SECURITY', 'oauth');
+    .constant('SECURITY', 'oauth')
+    .constant('VEL_DECIMAL_POINTS', 6);
 
 // Use SECURITY constant as 'oauth' to enable Oauth2 on community app

@@ -1,6 +1,6 @@
 (function (module) {
     mifosX.controllers = _.extend(module, {
-        ViewSavingDetailsController: function (scope, routeParams, resourceFactory, paginatorService, location, $uibModal, route, dateFilter, $sce, $rootScope, API_VERSION) {
+        ViewSavingDetailsController: function (scope, routeParams, resourceFactory, paginatorService, location, $uibModal, route, dateFilter, $sce, $rootScope, API_VERSION, http, VEL_DECIMAL_POINTS) {
             scope.report = false;
             scope.hidePentahoReport = true;
             scope.showActiveCharges = true;
@@ -9,6 +9,9 @@
             scope.staffData = {};
             scope.fieldOfficers = [];
             scope.savingaccountdetails = [];
+
+            scope.vel_decimal_points = VEL_DECIMAL_POINTS;
+
             scope.isDebit = function (savingsTransactionType) {
                 return savingsTransactionType.withdrawal == true || savingsTransactionType.feeDeduction == true
                     || savingsTransactionType.overdraftInterest == true || savingsTransactionType.withholdTax == true;
@@ -68,6 +71,9 @@
                     case "activate":
                         location.path('/savingaccount/' + accountId + '/activate');
                         break;
+                    case "changeActivationDate":
+                        location.path('/savingaccount/' + accountId + '/changeActivationDate');
+                        break;    
                     case "deposit":
                         location.path('/savingaccount/' + accountId + '/deposit');
                         break;
@@ -255,6 +261,10 @@
                             {
                                 name: "button.close",
                                 taskPermissionName:"CLOSE_SAVINGSACCOUNT"
+                            },
+                            {
+                                name: "button.changeActivationDate",
+                                taskPermissionName:"ACTIVATE_SAVINGSACCOUNT"
                             }
                         ]
 
@@ -386,6 +396,10 @@
                 location.path("/searchtransaction/").search({savingsId: scope.savingaccountdetails.id});
             };
 
+            scope.searchSavingTransaction = function(){
+                location.path("/searchSavingTransaction/").search({savingsId: scope.savingaccountdetails.id, orisavingaccountdetails: scope.savingaccountdetails});
+            };
+
             scope.viewDataTable = function (registeredTableName,data){
                 if (scope.datatabledetails.isMultirow) {
                     location.path("/viewdatatableentry/"+registeredTableName+"/"+scope.savingaccountdetails.id+"/"+data.row[0]);
@@ -426,7 +440,29 @@
                 }
 
                 // allow untrusted urls for iframe http://docs.angularjs.org/error/$sce/insecurl
-                scope.viewReportDetails = $sce.trustAsResourceUrl(scope.baseURL);
+                //scope.viewReportDetails = $sce.trustAsResourceUrl(scope.baseURL);
+
+                //fixing UI issue as above call giving 401 due to token header missing
+                // http://docs.angularjs.org/error/$sce/insecurl
+                scope.baseURL = $sce.trustAsResourceUrl(scope.baseURL);
+                scope.baseURL = $sce.valueOf(scope.baseURL);
+                http.get(scope.baseURL, {responseType: 'arraybuffer'})
+                    .then(function(response) {
+                        let data = response.data;
+                        let status = response.status;
+                        let headers = response.headers;
+                        let config = response.config;
+                        var contentType = headers('Content-Type');
+                        var file = new Blob([data], {type: contentType});
+                        var fileContent = URL.createObjectURL(file);
+
+                        // Pass the form data to the iframe as a data url.
+                        scope.viewReportDetails = $sce.trustAsResourceUrl(fileContent);
+                  })
+                .catch(function(error){
+                    $log.error(`Error loading ${scope.reportType} report`);
+                    $log.error(error);
+                });
 
             };
 
@@ -448,7 +484,29 @@
                     scope.baseURL += "&" + reportParams;
                 }
                 // allow untrusted urls for iframe http://docs.angularjs.org/error/$sce/insecurl
-                scope.viewReportDetails = $sce.trustAsResourceUrl(scope.baseURL);
+                //scope.viewReportDetails = $sce.trustAsResourceUrl(scope.baseURL);
+
+                ////fixing UI issue as above call giving 401 due to token header missing
+                // http://docs.angularjs.org/error/$sce/insecurl
+                scope.baseURL = $sce.trustAsResourceUrl(scope.baseURL);
+                scope.baseURL = $sce.valueOf(scope.baseURL);
+                http.get(scope.baseURL, {responseType: 'arraybuffer'})
+                    .then(function(response) {
+                        let data = response.data;
+                        let status = response.status;
+                        let headers = response.headers;
+                        let config = response.config;
+                        var contentType = headers('Content-Type');
+                        var file = new Blob([data], {type: contentType});
+                        var fileContent = URL.createObjectURL(file);
+
+                        // Pass the form data to the iframe as a data url.
+                        scope.viewReportDetails = $sce.trustAsResourceUrl(fileContent);
+                  })
+                .catch(function(error){
+                    $log.error(`Error loading ${scope.reportType} report`);
+                    $log.error(error);
+                });
 
             };
 
@@ -516,7 +574,7 @@
 
         }
     });
-    mifosX.ng.application.controller('ViewSavingDetailsController', ['$scope', '$routeParams', 'ResourceFactory','PaginatorService' , '$location','$uibModal', '$route', 'dateFilter', '$sce', '$rootScope', 'API_VERSION', mifosX.controllers.ViewSavingDetailsController]).run(function ($log) {
+    mifosX.ng.application.controller('ViewSavingDetailsController', ['$scope', '$routeParams', 'ResourceFactory','PaginatorService' , '$location','$uibModal', '$route', 'dateFilter', '$sce', '$rootScope', 'API_VERSION', '$http', 'VEL_DECIMAL_POINTS', mifosX.controllers.ViewSavingDetailsController]).run(function ($log) {
         $log.info("ViewSavingDetailsController initialized");
     });
 }(mifosX.controllers || {}));

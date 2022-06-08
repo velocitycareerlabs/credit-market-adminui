@@ -9,7 +9,7 @@ RUN npm install -g bower
 RUN npm install -g grunt-cli
 COPY . /usr/src/app
 RUN bower --allow-root install
-RUN npm install
+RUN npm install --force
 RUN bundle install
 RUN grunt prod
 
