@@ -1,6 +1,6 @@
 {
   "name": "mifosx-community-app",
-  "description": "This is the default web application built on top of the MifosX platform for the mifos user community. It is a Single-Page App (SPA) written in web standard technologies like JavaScript, CSS and HTML5. It leverages common popular frameworks/libraries such as AngularJS, Bootstrap and Font Awesome.",
+  "description": "This is the default web application built on top of the MifosX platform for the mifos user community. It is a Single-Page App (SPA) written in web standard technologies like JavaScript, CSS and HTML5. It leverages common popular frameworks/libraries such as AngularJS, Bootstrap and Font Awesome",
   "author": {
     "name": "openMF",
     "email": "mifos-developer@lists.sourceforge.net",
