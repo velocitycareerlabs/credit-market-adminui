@@ -1,5 +1,6 @@
 name: Build and Deploy FineractUi to S3
 on:
+  workflow_dispatch:
   push:
     branches:
     - dev
