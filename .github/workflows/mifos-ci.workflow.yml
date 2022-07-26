@@ -19,7 +19,6 @@ jobs:
         uses: actions/checkout@v2
       # Set Dev Environment
       - name: Set environment on pull_request
-        if: github.event_name == 'pull_request'
         run: |
           echo 'CLOUD_ENV=dev' >> $GITHUB_ENV
           sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_DEV }}|g' app/scripts/modules/configurations.js
@@ -27,6 +26,7 @@ jobs:
           sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_DEV }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_DEV }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/modules/configurations.js
+        if: github.event_name == 'pull_request'
       # Set Dev Environment
       - name: Set Dev environment
         if: github.ref == 'refs/heads/dev'
@@ -57,14 +57,10 @@ jobs:
           sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_PROD }}|g' app/scripts/modules/configurations.js
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: ${{ matrix.node-version }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: ${{ matrix.node-version }}
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -74,19 +70,23 @@ jobs:
         run: |
           npm install -g bower
           npm install -g grunt-cli
+        if: github.event_name == 'pull_request'
       - name: Install Dependecies Using bower
         run: |
           bower install
+        if: github.event_name == 'pull_request'
       - name: Install Node dependencies
         run: |
           npm install --force
           npm install grunt-contrib-compass --save-dev
+        if: github.event_name == 'pull_request'
       - name: Install Gem dependencies
         run: |
           gem install bundler
           gem install compass
           bundle install
-          ls
+        if: github.event_name == 'pull_request'
       - name: Build code to deploy
         run: |
           grunt prod --force
+        if: github.event_name == 'pull_request'
