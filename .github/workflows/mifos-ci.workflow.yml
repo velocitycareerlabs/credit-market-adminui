@@ -11,9 +11,22 @@ jobs:
   build:
     name: CI
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+      # Set Dev Environment
+      - name: Set environment on pull_request
+        if: github.event_name == 'pull_request'
+        run: |
+          echo 'CLOUD_ENV=dev' >> $GITHUB_ENV
+          sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/modules/configurations.js
       # Set Dev Environment
       - name: Set Dev environment
         if: github.ref == 'refs/heads/dev'
@@ -44,12 +57,10 @@ jobs:
           sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_PROD }}|g' app/scripts/modules/configurations.js
-      - name: Set S3 Bucket Prefix
-        run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-mifos-${{ env.CLOUD_ENV }}' >> $GITHUB_ENV
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: ${{ matrix.node-version }}
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -70,7 +81,7 @@ jobs:
         run: |
           gem install bundler
           gem install compass
-          bundle install 
+          bundle install
           ls
       - name: Build code to deploy
         run: |
