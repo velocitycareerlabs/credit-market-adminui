@@ -57,10 +57,14 @@ jobs:
           sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_PROD }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_PROD }}|g' app/scripts/modules/configurations.js
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16.x
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
