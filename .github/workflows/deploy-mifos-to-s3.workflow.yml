@@ -68,7 +68,7 @@ jobs:
       - name: Install Node dependencies
         run: |
           npm install --force
-          npm install grunt-contrib-compass --save-dev
+          npm install grunt-contrib-compass --save-dev --force
       - name: Install Gem dependencies
         run: |
           gem install bundler
