@@ -67,12 +67,10 @@ jobs:
           bower install
       - name: Install Node dependencies
         run: |
-          npm install --force
-          npm install grunt-contrib-compass --save-dev --force
+          npm install
       - name: Install Gem dependencies
         run: |
           gem install bundler
-          gem install compass
           bundle install 
           ls
       - name: Build code to deploy
