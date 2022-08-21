@@ -1,0 +1,49 @@
+name: Mifos CI
+
+on:
+  pull_request:
+    branches: [ master, staging, dev ]
+
+jobs:
+  build:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      # Set Dev Environment
+      - name: Set environment on pull_request
+        run: |
+          echo 'CLOUD_ENV=dev' >> $GITHUB_ENV
+          sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_DEV }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/modules/configurations.js
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install Grunt and bower
+        run: |
+          npm install -g bower
+          npm install -g grunt-cli
+      - name: Install Dependecies Using bower
+        run: |
+          bower install
+      - name: Install Node dependencies
+        run: |
+          npm install
+      - name: Install Gem dependencies
+        run: |
+          gem install bundler
+          bundle install
+      - name: Build code to deploy
+        run: |
+          grunt prod --force
+
