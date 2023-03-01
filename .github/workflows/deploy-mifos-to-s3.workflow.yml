@@ -6,6 +6,7 @@ on:
     - dev
     - staging
     - master
+    - qa
 env:
   AWS_REGION: "us-east-1"
   STACK_NAME: "velo"
@@ -27,6 +28,16 @@ jobs:
           sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_DEV }}|g' app/scripts/modules/configurations.js
           sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_DEV }}|g' app/scripts/modules/configurations.js
           sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_DEV }}|g' app/scripts/modules/configurations.js
+      # Set QA Environment
+      - name: Set QA environment
+        if: github.ref == 'refs/heads/qa'
+        run: |
+          echo 'CLOUD_ENV=qa' >> $GITHUB_ENV
+          sed -i 's|$AUTH0_SERVER_URL|${{ secrets.AUTH0_SERVER_URL_QA }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CLIENT_ID|${{ secrets.AUTH0_CLIENT_ID_QA }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_CONNECTION_ID|${{ secrets.AUTH0_CONNECTION_ID_QA }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$AUTH0_AUDIENCE|${{ secrets.AUTH0_AUDIENCE_QA }}|g' app/scripts/modules/configurations.js
+          sed -i 's|$FINERACT_BASE_URL|${{ secrets.FINERACT_BASE_URL_QA }}|g' app/scripts/modules/configurations.js          
       # Set Staging Environment
       - name: Set Staging Environment
         if: github.ref == 'refs/heads/staging'
