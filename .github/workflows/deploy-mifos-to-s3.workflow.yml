@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Set Dev Environment
       - name: Set Dev environment
         if: github.ref == 'refs/heads/dev'
@@ -61,7 +61,7 @@ jobs:
       - name: Set S3 Bucket Prefix
         run: echo 'AWS_S3_BUCKET=${{ env.STACK_NAME }}-mifos-${{ env.CLOUD_ENV }}' >> $GITHUB_ENV
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
       - name: Set up Ruby
@@ -88,7 +88,7 @@ jobs:
         run: |
           grunt prod --force
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
